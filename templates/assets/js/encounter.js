@@ -1,4 +1,4 @@
-/* Chiri for Halo —— 交互脚本
+/* Encounter for Halo —— 交互脚本
  * 逐项对应原版组件：
  *   ThemeManager / ThemeToggle  → 深色模式
  *   GradientMask                → 顶部滚动遮罩
@@ -10,7 +10,7 @@
   'use strict'
 
   /* ---------------- 深色模式（ThemeManager） ---------------- */
-  var THEME_KEY = 'chiri-theme'
+  var THEME_KEY = 'encounter-theme'
 
   function applyTheme(theme, persist) {
     var root = document.documentElement
@@ -277,7 +277,7 @@
      注意：Halo 评论组件用 IntersectionObserver 懒挂载，
      只有评论区滚进视口才会注入内容，所以这里不能用固定超时收尾。 */
   function initComments() {
-    var wrap = document.querySelector('.chiri-comments')
+    var wrap = document.querySelector('.encounter-comments')
     if (!wrap) return
     var target = wrap.querySelector('div[id^="comment-content-"]')
     if (!target) return

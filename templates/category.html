@@ -5,7 +5,7 @@
         <a th:href="@{/}" class="back-button" style="display:inline-block;margin-bottom:2rem">&larr; index</a>
         <h2 class="page-title" th:text="${category.spec.displayName}"></h2>
         <th:block th:replace="~{modules/post-list :: postList(${posts.items})}"></th:block>
-        <nav class="chiri-pager" th:if="${posts.hasPrevious() or posts.hasNext()}">
+        <nav class="encounter-pager" th:if="${posts.hasPrevious() or posts.hasNext()}">
           <a th:href="@{'/categories/' + ${category.spec.slug} + '/page/' + ${posts.page - 1}}"
              th:classappend="${!posts.hasPrevious()} ? 'is-disabled'">&larr; 上一页</a>
           <a th:href="@{'/categories/' + ${category.spec.slug} + '/page/' + ${posts.page + 1}}"

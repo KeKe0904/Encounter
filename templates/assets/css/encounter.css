@@ -1,4 +1,4 @@
-/* Chiri for Halo —— 主题补充样式
+/* Encounter for Halo —— 主题补充样式
  * 1-6：动效层（严格对齐原版参数）
  * 7-9：Halo 侧新增页面元素（按原版设计语言延伸）
  */
@@ -12,18 +12,18 @@
 @supports (view-transition-name: none) {
   @media not (prefers-reduced-motion: reduce) {
     ::view-transition-old(root) {
-      animation: chiri-fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation: encounter-fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
     ::view-transition-new(root) {
       opacity: 0;
-      animation: chiri-fade-in 0.4s ease 0.2s forwards;
+      animation: encounter-fade-in 0.4s ease 0.2s forwards;
       will-change: filter, opacity, transform;
     }
   }
 }
 
-@keyframes chiri-fade-out {
+@keyframes encounter-fade-out {
   0% {
     opacity: 1;
   }
@@ -32,7 +32,7 @@
   }
 }
 
-@keyframes chiri-fade-in {
+@keyframes encounter-fade-in {
   0% {
     opacity: 0;
     filter: blur(8px);
@@ -52,7 +52,7 @@
 
 /* 非安全上下文（http://IP）不支持 View Transition，用整页淡入降级 */
 .no-vt body {
-  animation: chiri-fade-in 0.5s ease 0.05s both;
+  animation: encounter-fade-in 0.5s ease 0.05s both;
 }
 
 /* ============ 2. 顶部滚动遮罩（原版 GradientMask） ============ */
@@ -219,10 +219,10 @@ body.image-viewer-open {
 /* ============ 5. 目录浮现 ============ */
 
 .toc-container.fixed-position {
-  animation: chiri-toc-in 0.35s ease 0.25s both;
+  animation: encounter-toc-in 0.35s ease 0.25s both;
 }
 
-@keyframes chiri-toc-in {
+@keyframes encounter-toc-in {
   from {
     opacity: 0;
     transform: translateX(-4px);
@@ -270,7 +270,7 @@ body.image-viewer-open {
   color: var(--text-tertiary);
 }
 
-.chiri-pager {
+.encounter-pager {
   display: flex;
   justify-content: space-between;
   margin-top: 2.5rem;
@@ -278,17 +278,17 @@ body.image-viewer-open {
   color: var(--text-secondary);
 }
 
-.chiri-pager a {
+.encounter-pager a {
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s ease-out;
 }
 
-.chiri-pager a:hover {
+.encounter-pager a:hover {
   color: var(--text-primary);
 }
 
-.chiri-pager a.is-disabled {
+.encounter-pager a.is-disabled {
   pointer-events: none;
   opacity: 0.35;
 }
@@ -358,7 +358,7 @@ body.image-viewer-open {
 
 /* ============ 9. 评论区（Halo 能力，按原版版式排布） ============ */
 
-.chiri-comments {
+.encounter-comments {
   position: relative; /* 骨架 ::after 需要相对本区域定位 */
   margin-top: 4rem;
   padding-top: 2rem;
@@ -369,7 +369,7 @@ body.image-viewer-open {
   line-height: 1.75;
   letter-spacing: var(--spacing-m);
 
-  /* 把 Halo 评论组件的色板接到 Chiri 的语义色上 */
+  /* 把 Halo 评论组件的色板接到 Encounter 的语义色上 */
   --halo-cw-text-1-color: var(--text-primary);
   --halo-cw-text-2-color: var(--text-primary);
   --halo-cw-text-3-color: var(--text-secondary);
@@ -384,24 +384,24 @@ body.image-viewer-open {
   --halo-cw-emoji-picker-rgb-color: 0, 0, 0;
 }
 
-html.dark .chiri-comments {
+html.dark .encounter-comments {
   --halo-cw-emoji-picker-rgb-accent: 255, 255, 255;
   --halo-cw-emoji-picker-rgb-background: 28, 28, 28;
   --halo-cw-emoji-picker-rgb-color: 255, 255, 255;
 }
 
 /* 评论内容注入前：占位骨架，避免加载完成瞬间撑开页面 */
-.chiri-comments > div {
+.encounter-comments > div {
   transition:
     opacity 0.3s ease-out,
     transform 0.3s ease-out;
 }
 
-.chiri-comments.is-loading > div {
+.encounter-comments.is-loading > div {
   opacity: 0;
 }
 
-.chiri-comments.is-loading::after {
+.encounter-comments.is-loading::after {
   content: '';
   display: block;
   position: absolute;
@@ -412,12 +412,12 @@ html.dark .chiri-comments {
   border-radius: 6px;
   background: linear-gradient(90deg, var(--border) 25%, transparent 37%, var(--border) 63%);
   background-size: 400% 100%;
-  animation: chiri-skeleton 1.4s ease infinite;
+  animation: encounter-skeleton 1.4s ease infinite;
   opacity: 0.5;
   pointer-events: none;
 }
 
-@keyframes chiri-skeleton {
+@keyframes encounter-skeleton {
   0% {
     background-position: 100% 50%;
   }
@@ -427,11 +427,11 @@ html.dark .chiri-comments {
 }
 
 /* 注入完成后淡入上移，替代原来的硬切入 */
-.chiri-comments > div.is-ready {
-  animation: chiri-comment-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+.encounter-comments > div.is-ready {
+  animation: encounter-comment-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-@keyframes chiri-comment-in {
+@keyframes encounter-comment-in {
   from {
     opacity: 0;
     transform: translateY(6px);
@@ -443,8 +443,8 @@ html.dark .chiri-comments {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chiri-comments.is-loading::after,
-  .chiri-comments > div.is-ready {
+  .encounter-comments.is-loading::after,
+  .encounter-comments > div.is-ready {
     animation: none !important;
   }
 }
@@ -458,9 +458,9 @@ html.dark .chiri-comments {
   letter-spacing: var(--spacing-m);
 }
 
-/* 让输入框与按钮的圆角、字重贴近 Chiri 的克制风格 */
-.chiri-comments textarea,
-.chiri-comments input {
+/* 让输入框与按钮的圆角、字重贴近 Encounter 的克制风格 */
+.encounter-comments textarea,
+.encounter-comments input {
   font-family: var(--sans);
 }
 

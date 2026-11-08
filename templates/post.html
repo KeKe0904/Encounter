@@ -22,7 +22,7 @@
           </div>
           <article class="content" th:utext="${post.content.content}"></article>
 
-          <section class="chiri-comments" th:if="${theme.config.halo?.comment_enable != false}">
+          <section class="encounter-comments" th:if="${theme.config.halo?.comment_enable != false}">
             <h2 class="comment-heading">评论</h2>
             <halo:comment group="content.halo.run" kind="Post" th:name="${post.metadata.name}" th:group="content.halo.run" />
           </section>

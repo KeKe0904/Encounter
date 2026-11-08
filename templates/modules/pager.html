@@ -1,4 +1,4 @@
-<nav th:fragment="pager(hasPrev,prevUrl,hasNext,nextUrl)" class="chiri-pager" th:if="${hasPrev or hasNext}">
+<nav th:fragment="pager(hasPrev,prevUrl,hasNext,nextUrl)" class="encounter-pager" th:if="${hasPrev or hasNext}">
   <a th:href="@{${prevUrl}}" th:classappend="${!hasPrev} ? 'is-disabled'" class="pager-prev">&larr; 上一页</a>
   <a th:href="@{${nextUrl}}" th:classappend="${!hasNext} ? 'is-disabled'" class="pager-next">下一页 &rarr;</a>
 </nav>

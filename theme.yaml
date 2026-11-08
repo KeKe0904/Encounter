@@ -8,9 +8,9 @@ spec:
     name: 3ASH / Halo 移植版
     website: https://github.com/the3ash/astro-chiri
   description: Encounter —— 基于 Chiri 移植到 Halo 2.27 的极简博客主题。
-  homepage: https://chiri.the3ash.com
-  repo: https://github.com/the3ash/astro-chiri
-  issues: https://github.com/the3ash/astro-chiri/issues
+  homepage: https://github.com/KeKe0904/Encounter
+  repo: https://github.com/KeKe0904/Encounter
+  issues: https://github.com/KeKe0904/Encounter/issues
   settingName: "theme-encounter-setting"
   configMapName: "theme-encounter-configmap"
   version: 0.1.0
