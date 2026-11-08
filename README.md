@@ -4,6 +4,8 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
+> **直接下载安装包**：[theme-encounter-0.1.0.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.0/theme-encounter-0.1.0.zip)
+
 当前版本 **0.1.0** · 兼容 **Halo >= 2.27.0**
 
 ---
@@ -96,11 +98,13 @@
 
 ## 安装
 
-### 方式一：上传安装（推荐）
+### 方式一：下载 Release 包（推荐）
 
-1. 打包为 zip（`theme.yaml` 需位于 zip 根目录）
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.0.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
+
+> ⚠️ 不要用代码页的「Download ZIP」：那样打出来的压缩包外面会多一层 `Encounter-main/` 目录，`theme.yaml` 不在根目录，Halo 会识别失败。Release 里的包是可以直接装的。
 
 ### 方式二：目录部署
 
