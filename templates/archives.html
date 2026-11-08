@@ -10,5 +10,6 @@
           </th:block>
         </section>
         <p th:if="${archives.items.isEmpty()}">还没有文章</p>
+        <th:block th:replace="~{modules/pager :: pager(${archives.hasPrevious()}, ${archives.prevUrl}, ${archives.hasNext()}, ${archives.nextUrl})}"></th:block>
   </th:block>
 </html>

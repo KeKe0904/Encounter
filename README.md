@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.1.9.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.9/theme-encounter-0.1.9.zip)
+> **直接下载安装包**：[theme-encounter-0.2.0.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.2.0/theme-encounter-0.2.0.zip)
 
-当前版本 **0.1.9** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.2.0** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,17 @@
 ---
 
 ## 更新日志
+
+### 0.2.0
+
+> 本版针对 Halo 应用市场上架审核意见做了完整修正。
+
+- **补全分页**：首页与归档页此前只渲染 `posts.items` / `archives.items`，超过一页的文章无法进入。现使用 `hasPrevious()/hasNext()` 与 `prevUrl/nextUrl` 统一由 `modules/pager.html` 渲染
+- **移除硬编码路由**：标签页、分类页分页不再拼接 `/tags/`、`/categories/`，改用模型提供的 `prevUrl/nextUrl`（如 `/tags/halo/page/2` 由 Halo 生成）
+- **`modules/pager.html` 已实际启用**，不再是孤立模板；禁用态改用 `<span>` 而非假链接，并带 `rel="prev/next"`
+- **评论显示条件补全**：由「主题开关」单一判断改为 `comment_enable` + `haloCommentEnabled`（评论组件是否可用）+ `allowComment`（文章自身设置）三重判断
+- **README 修正**：模板引擎表述由 FreeMarker 更正为 Thymeleaf 3；目录树移除实际不存在的空 `i18n/`，并注明 `docs/screenshots/` 不随主题包发布
+- 说明：「启用搜索入口」设置自 0.1.3 起已生效（`templates/modules/header.html` 读取 `search_enable`），开关关闭时搜索按钮不渲染
 
 ### 0.1.9
 
@@ -126,7 +137,7 @@
 | 层 | 使用 |
 | --- | --- |
 | 博客系统 | **Halo 2.27.x**（Java 21 运行） |
-| 主题模板 | **FreeMarker** 引擎，模板内使用 Thymeleaf 风格属性（`th:each` / `th:if` / `th:replace` / `@{...}`） |
+| 主题模板 | **Thymeleaf 3** 模板引擎（SpringEL 表达式），使用 `th:each` / `th:if` / `th:replace` / `@{...}` |
 | 布局契约 | Halo 2.26+ 的 `templates/layout.html` 页面布局契约（列表页外壳 / 文章外壳拆两个文件） |
 | 静态资源 | Halo `templates/assets/`，通过 `@{/assets/...}` 解析到 `/themes/theme-encounter/assets/...` |
 
@@ -168,7 +179,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.9.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.2.0.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 
@@ -206,13 +217,13 @@
 
 ## 目录结构
 
+主题包内容：
+
 ```
 theme-encounter/
 ├── theme.yaml                # 主题元信息
 ├── settings.yaml             # 后台设置表单
 ├── LICENSE                   # MIT
-├── i18n/                     # 国际化（预留）
-├── docs/screenshots/         # README 截图
 └── templates/
     ├── layout.html           # 列表页外壳
     ├── post-layout.html      # 文章页外壳

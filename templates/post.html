@@ -36,7 +36,9 @@
             </button>
           </div>
 
-          <section class="encounter-comments" th:if="${theme.config.halo?.comment_enable != false}">
+          <!-- 评论：主题开关 + Halo 全局（评论组件是否可用）+ 文章自身 allowComment 三重判断 -->
+          <section class="encounter-comments"
+                   th:if="${theme.config.halo?.comment_enable != false and haloCommentEnabled and allowComment != false}">
             <h2 class="comment-heading">评论</h2>
             <div class="comment-gate" data-comment-gate th:if="${theme.config.halo?.comment_permission == 'login'}" hidden>
               <a th:href="@{/login}" class="comment-gate-link">登录后参与评论</a>

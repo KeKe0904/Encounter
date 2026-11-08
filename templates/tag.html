@@ -5,11 +5,6 @@
         <a th:href="@{/}" class="back-button page-back">&larr; index</a>
         <h2 class="page-title" th:text="${tag.spec.displayName}"></h2>
         <th:block th:replace="~{modules/post-list :: postList(${posts.items})}"></th:block>
-        <nav class="encounter-pager" th:if="${posts.hasPrevious() or posts.hasNext()}">
-          <a th:href="@{'/tags/' + ${tag.spec.slug} + '/page/' + ${posts.page - 1}}"
-             th:classappend="${!posts.hasPrevious()} ? 'is-disabled'">&larr; 上一页</a>
-          <a th:href="@{'/tags/' + ${tag.spec.slug} + '/page/' + ${posts.page + 1}}"
-             th:classappend="${!posts.hasNext()} ? 'is-disabled'">下一页 &rarr;</a>
-        </nav>
+        <th:block th:replace="~{modules/pager :: pager(${posts.hasPrevious()}, ${posts.prevUrl}, ${posts.hasNext()}, ${posts.nextUrl})}"></th:block>
   </th:block>
 </html>

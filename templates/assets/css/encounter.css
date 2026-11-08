@@ -289,6 +289,11 @@ body.image-viewer-open {
   color: var(--text-primary);
 }
 
+.encounter-pager .is-disabled {
+  color: var(--text-tertiary);
+  cursor: default;
+}
+
 .encounter-pager a.is-disabled {
   pointer-events: none;
   opacity: 0.35;
