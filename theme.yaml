@@ -3,6 +3,7 @@ kind: Theme
 metadata:
   name: theme-encounter
 spec:
+  logo: https://cdn.jsdelivr.net/gh/KeKe0904/Encounter@main/logo.svg
   displayName: "Encounter"
   author:
     name: 3ASH / Halo 移植版
