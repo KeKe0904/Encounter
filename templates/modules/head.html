@@ -1,6 +1,6 @@
 <th:block th:fragment="head(pageTitle)">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title th:text="${pageTitle != null ? pageTitle + ' · ' + site.title : site.title}">Encounter</title>
   <script>
     // 首屏绘制前确定主题，避免闪白/黑块（对应原版 ThemeManager 的内联脚本）
@@ -20,8 +20,8 @@
   <link rel="stylesheet" th:href="@{/assets/css/global.css?v=13}" />
   <link rel="stylesheet" th:href="@{/assets/css/post.css?v=13}" />
   <link rel="stylesheet" th:href="@{/assets/css/components.css?v=13}" />
-  <link rel="stylesheet" th:href="@{/assets/css/encounter.css?v=33}" />
+  <link rel="stylesheet" th:href="@{/assets/css/encounter.css?v=46}" />
   <link rel="stylesheet" th:if="${theme.config.post?.katex != false}" th:href="@{/assets/css/katex.min.css?v=1}" />
   <link rel="icon" type="image/png" th:href="@{/assets/favicon-light.png}" />
-  <script th:src="@{/assets/js/encounter.js?v=32}" defer></script>
+  <script th:src="@{/assets/js/encounter.js?v=47}" defer></script>
 </th:block>

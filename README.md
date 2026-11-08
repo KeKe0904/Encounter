@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.1.2.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.2/theme-encounter-0.1.2.zip)
+> **直接下载安装包**：[theme-encounter-0.1.3.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.3/theme-encounter-0.1.3.zip)
 
-当前版本 **0.1.2** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.1.3** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,14 @@
 ---
 
 ## 更新日志
+
+### 0.1.3
+
+- 新增**右上角深浅色切换**：原版 ThemeToggle 图标，写入 localStorage、刷新保持，可后台关闭
+- 新增**右上角搜索**：对接 Halo 搜索插件，支持 `Ctrl/Cmd + K`；组件默认绿色主色已改为主题黑白灰
+- 新增**右上角天气**：按访客 IP 定位（ipinfo.io）取当地气温（Open-Meteo），12 种天气线条图标随天气码与昼夜切换，30 分钟缓存，失败静默隐藏
+- **移动端防缩放**：输入框聚焦字号兜到 16px（含 shadow DOM 内的搜索/评论框），`touch-action` 关闭双击与捏合缩放
+- **简介排版优化**：跟随正文颜色与字号，行高 1.7、段距 0.72em、上下留白收紧
 
 ### 0.1.2
 
@@ -122,7 +130,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.2.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.3.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 

@@ -331,23 +331,7 @@ body.image-viewer-open {
   align-items: center;
 }
 
-.theme-toggle {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-size: var(--font-size-s);
-  color: var(--text-secondary);
-  opacity: 0.7;
-  transition:
-    opacity 0.2s ease-out,
-    color 0.2s ease-out;
-}
 
-.theme-toggle:hover {
-  opacity: 1;
-  color: var(--text-primary);
-}
 
 /* 阅读时长 */
 .reading-time {
@@ -479,13 +463,16 @@ html.dark {
   background-color: var(--bg, #ffffff);
 }
 
-/* 首页简介区域（对应原版 About 组件） */
-.about {
-  color: var(--text-secondary);
+/* 首页简介区域
+   底子沿用原版：文字颜色 / 字号跟随正文，块下方 1.25rem
+   但简介通常只有两三行短句，正文的 1.75em 段距会显得空，这里单独收紧 */
+.about:not(:empty) {
+  margin: 0.9rem 0 1.25rem;
 }
 
-.about:not(:empty) {
-  margin-bottom: 1.25rem;
+.about p {
+  margin: 0 0 0.72em;
+  line-height: 1.7;
 }
 
 .about > :first-child {
@@ -603,4 +590,139 @@ footer a:hover {
     gap: 0.3rem 0.9rem;
     text-align: center;
   }
+}
+
+/* 深浅色切换按钮（原版 ThemeToggle：12px 半填充圆形图标） */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: var(--text-primary);
+  opacity: 0.4;
+  transition: opacity 0.2s ease-out;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .theme-toggle {
+    opacity: 0.55;
+  }
+}
+
+/* ============ 页头动作区（搜索 / 主题切换） ============ */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.header-action {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--text-primary);
+  opacity: 0.4;
+  transition: opacity 0.2s ease-out;
+}
+
+.header-action:hover,
+.header-action:focus-visible {
+  opacity: 1;
+}
+
+/* 把 Halo 搜索组件的绿色主色接到主题的黑白灰 */
+:root {
+  --halo-search-widget-primary-color: var(--text-primary);
+  --halo-search-widget-color-form-input: var(--text-primary);
+  --halo-search-widget-content-color: var(--text-primary);
+  --halo-search-widget-muted-color: var(--text-tertiary);
+  --halo-search-widget-base-bg-color: var(--bg);
+  --halo-search-widget-modal-bg-color: var(--bg);
+  --halo-search-widget-color-modal-content-bg: var(--bg);
+  --halo-search-widget-modal-layer-color: rgba(0, 0, 0, 0.35);
+  --halo-search-widget-color-modal-layer: rgba(0, 0, 0, 0.35);
+  --halo-search-widget-divider-color: var(--border);
+  --halo-search-widget-color-form-divider: var(--border);
+  --halo-search-widget-hit-bg-color: var(--border);
+  --halo-search-widget-color-result-item-bg: var(--border);
+  --halo-search-widget-kbd-border-color: var(--border);
+  --halo-search-widget-color-command-kbd-border: var(--border);
+  --halo-search-widget-base-font-family: var(--sans);
+  --halo-search-widget-base-font-size: 15px;
+  --halo-search-widget-base-border-radius: 8px;
+}
+
+/* 移动端输入框防 iOS 自动缩放（字号 < 16px 会触发页面放大） */
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* 移动端：关掉双击缩放（保留双指捏合缩放），并去掉点击高亮方块 */
+html,
+body {
+  /* 关闭捏合与双击缩放，只保留滚动 */
+  touch-action: pan-x pan-y;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+a,
+button,
+.header-action,
+.post-item,
+.beian-item {
+  touch-action: pan-x pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 右上角天气（按访客 IP 定位） */
+.weather {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--text-tertiary);
+  opacity: 0.9;
+  cursor: default;
+  white-space: nowrap;
+  min-width: 2.9rem;
+  justify-content: flex-end;
+}
+
+.weather[hidden] {
+  display: none;
+}
+
+.weather .weather-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.weather .weather-temp {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }

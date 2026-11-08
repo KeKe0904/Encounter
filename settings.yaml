@@ -18,8 +18,9 @@ spec:
           value: true
         - $formkit: checkbox
           name: theme_toggle
-          label: 显示主题切换按钮
-          value: false
+          label: 显示深浅色切换按钮
+          value: true
+          help: 显示在页头右上角，点击切换白天 / 夜间
         - $formkit: textarea
           name: intro
           label: 首页简介
@@ -30,6 +31,11 @@ spec:
           name: post_list_dotted_divider
           label: 列表使用点状分隔线
           value: false
+        - $formkit: checkbox
+          name: weather_enable
+          label: 显示天气
+          value: true
+          help: 按访客 IP 定位显示所在城市当前温度（ipinfo.io + Open-Meteo，无需密钥）
         - $formkit: checkbox
           name: footer
           label: 显示页脚

@@ -43,6 +43,7 @@
     document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark', true)
+        syncSearchWidgetTheme()
       })
     })
   }
@@ -426,6 +427,214 @@
     if (el) el.textContent = new Date().getFullYear()
   }
 
+  /* ---------------- 搜索入口（适配 Halo 搜索插件 PluginSearchWidget） ----------------
+     插件会自动往 body 插一个 <search-modal>，并暴露 window.SearchWidget.open() */
+  function initSearch() {
+    var btn = document.querySelector('[data-search-open]')
+    if (!btn) return
+
+    function openSearch() {
+      if (window.SearchWidget && typeof window.SearchWidget.open === 'function') {
+        window.SearchWidget.open({})
+        return true
+      }
+      return false
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault()
+      if (openSearch()) return
+      // 插件脚本是 defer 加载的，偶尔还没就绪，短轮询等它
+      var tries = 0
+      var timer = window.setInterval(function () {
+        if (openSearch()) { window.clearInterval(timer); return }
+        if (++tries > 20) window.clearInterval(timer)
+      }, 150)
+    })
+
+    // Ctrl/Cmd + K 快捷键
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault()
+        openSearch()
+      }
+    })
+  }
+
+  /* 搜索组件在 shadow DOM 里自带一套深色变量，继承值会被覆盖，
+     只能在宿主元素上写内联变量（优先级最高）来对齐主题色 */
+  function syncSearchWidgetTheme() {
+    var modal = document.querySelector('search-modal')
+    if (!modal) return false
+    var root = getComputedStyle(document.documentElement)
+    var get = function (name, fallback) {
+      var v = root.getPropertyValue(name).trim()
+      return v || fallback
+    }
+    var bg = get('--bg', '#ffffff')
+    var text = get('--text-primary', '#111111')
+    var secondary = get('--text-secondary', 'rgba(0,0,0,.55)')
+    var tertiary = get('--text-tertiary', 'rgba(0,0,0,.25)')
+    var border = get('--border', 'rgba(0,0,0,.1)')
+
+    modal.style.setProperty('--halo-search-widget-base-bg-color', bg)
+    modal.style.setProperty('--halo-search-widget-modal-bg-color', bg)
+    modal.style.setProperty('--halo-search-widget-color-modal-content-bg', bg)
+    modal.style.setProperty('--halo-search-widget-color-modal-layer', 'rgba(0,0,0,0.5)')
+    modal.style.setProperty('--halo-search-widget-primary-color', text)
+    modal.style.setProperty('--halo-search-widget-content-color', text)
+    modal.style.setProperty('--halo-search-widget-color-form-input', text)
+    modal.style.setProperty('--halo-search-widget-muted-color', secondary)
+    modal.style.setProperty('--halo-search-widget-divider-color', border)
+    modal.style.setProperty('--halo-search-widget-color-form-divider', border)
+    modal.style.setProperty('--halo-search-widget-hit-bg-color', border)
+    modal.style.setProperty('--halo-search-widget-color-result-item-bg', border)
+    modal.style.setProperty('--halo-search-widget-kbd-border-color', border)
+    modal.style.setProperty('--halo-search-widget-color-command-kbd-border', border)
+    return true
+  }
+
+  function syncSearchWidgetThemeWithRetry() {
+    if (syncSearchWidgetTheme()) return
+    var tries = 0
+    var timer = window.setInterval(function () {
+      if (syncSearchWidgetTheme() || ++tries > 20) window.clearInterval(timer)
+    }, 150)
+  }
+
+  /* ---------------- 移动端输入框防缩放 ----------------
+     iOS Safari 在聚焦字号 < 16px 的输入框时会自动放大页面。
+     搜索/评论组件在 shadow DOM 里，外部 CSS 进不去，
+     所以在 focusin 时把字号兜到 16px（只影响聚焦那一刻的显示） */
+  function preventMobileInputZoom() {
+    function bump(el) {
+      if (!el || !el.tagName) return
+      var tag = el.tagName.toLowerCase()
+      var editable = el.isContentEditable ||
+        el.getAttribute('contenteditable') !== null ||
+        el.getAttribute('role') === 'textbox'
+      if (tag !== 'input' && tag !== 'textarea' && !editable) return
+      if (window.innerWidth > 768) return
+      var fs = parseFloat(window.getComputedStyle(el).fontSize) || 0
+      if (fs > 0 && fs < 16) el.style.fontSize = '16px'
+    }
+
+    document.addEventListener('focusin', function (e) {
+      var path = e.composedPath ? e.composedPath() : [e.target]
+      bump(path[0])
+    }, true)
+
+    // 兼容不支持 composedPath 的环境：给已知组件的 shadowRoot 单独挂
+    function bindShadow(el) {
+      if (!el || !el.shadowRoot || el.shadowRoot.__zoomBound) return
+      el.shadowRoot.__zoomBound = true
+      el.shadowRoot.addEventListener('focusin', function (e) { bump(e.target) }, true)
+    }
+    var tries = 0
+    var timer = window.setInterval(function () {
+      document.querySelectorAll('search-modal, comment-widget').forEach(bindShadow)
+      if (++tries > 20) window.clearInterval(timer)
+    }, 300)
+  }
+
+  /* ---------------- 右上角天气（按访客 IP 定位） ----------------
+     定位：ipinfo.io（免费、无密钥、CORS 开放）
+     天气：Open-Meteo（免费、无密钥、CORS 开放）
+     结果缓存 30 分钟，失败则整体隐藏，不占位不报错 */
+  var WEATHER_ICONS = {
+    day: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.1"/><path d="M6 1v1.3M6 9.7V11M1 6h1.3M9.7 6H11M2.5 2.5l.9.9M8.6 8.6l.9.9M9.5 2.5l-.9.9M3.4 8.6l-.9.9" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>',
+    night: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M9.4 7.6A4.2 4.2 0 0 1 4.4 2.6a4.4 4.4 0 1 0 5 5Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>',
+    cloud: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.4 8.3h5.2a1.8 1.8 0 0 0 .1-3.6 2.6 2.6 0 0 0-4.9-.5 1.8 1.8 0 0 0-.4 4.1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>',
+    rain: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.4 7.6h5.2a1.8 1.8 0 0 0 .1-3.6 2.6 2.6 0 0 0-4.9-.5 1.8 1.8 0 0 0-.4 4.1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M4.3 9.1l-.5 1.2M7.3 9.1l-.5 1.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>',
+    snow: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.4 7.6h5.2a1.8 1.8 0 0 0 .1-3.6 2.6 2.6 0 0 0-4.9-.5 1.8 1.8 0 0 0-.4 4.1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M4.4 9.6v1.2M7.2 9.6v1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',
+    thunder: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.4 7.3h5.2a1.8 1.8 0 0 0 .1-3.6 2.6 2.6 0 0 0-4.9-.5 1.8 1.8 0 0 0-.4 4.1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M6.4 8.4L5 10.4h1.7l-.4 1.4" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>',
+    fog: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.4 4.4h7.2M1.6 6.4h8.8M2.8 8.4h6.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>'
+  }
+
+  function weatherKind(code, isDay) {
+    if (code === 0) return isDay ? 'day' : 'night'
+    if (code === 1 || code === 2) return isDay ? 'day' : 'night'
+    if (code === 3) return 'cloud'
+    if (code === 45 || code === 48) return 'fog'
+    if (code >= 51 && code <= 57) return 'rain'
+    if (code >= 61 && code <= 67) return 'rain'
+    if (code >= 71 && code <= 77) return 'snow'
+    if (code >= 80 && code <= 82) return 'rain'
+    if (code === 85 || code === 86) return 'snow'
+    if (code >= 95) return 'thunder'
+    return 'cloud'
+  }
+
+  function weatherText(code) {
+    if (code === 0) return '晴'
+    if (code === 1) return '大部晴朗'
+    if (code === 2) return '多云'
+    if (code === 3) return '阴'
+    if (code === 45 || code === 48) return '雾'
+    if (code >= 51 && code <= 57) return '毛毛雨'
+    if (code >= 61 && code <= 67) return '雨'
+    if (code >= 71 && code <= 77) return '雪'
+    if (code >= 80 && code <= 82) return '阵雨'
+    if (code === 85 || code === 86) return '阵雪'
+    if (code >= 95) return '雷雨'
+    return '天气'
+  }
+
+  function initWeather() {
+    var box = document.querySelector('[data-weather]')
+    if (!box) return
+    var iconEl = box.querySelector('[data-weather-icon]')
+    var tempEl = box.querySelector('[data-weather-temp]')
+
+    function paint(data) {
+      if (!data || typeof data.temp !== 'number') return
+      if (iconEl) iconEl.innerHTML = WEATHER_ICONS[weatherKind(data.code, data.isDay)] || WEATHER_ICONS.cloud
+      if (tempEl) tempEl.textContent = Math.round(data.temp) + '°'
+      box.title = (data.city ? data.city + ' · ' : '') + weatherText(data.code) + ' ' + data.temp.toFixed(1) + '°C'
+      box.hidden = false
+    }
+
+    // 30 分钟缓存，避免每次翻页都打接口
+    try {
+      var cached = JSON.parse(sessionStorage.getItem('encounter-weather') || 'null')
+      if (cached && Date.now() - cached.t < 30 * 60 * 1000) { paint(cached); return }
+    } catch (e) {}
+
+    function getJSON(url) {
+      return new Promise(function (resolve, reject) {
+        var ctl = window.AbortController ? new AbortController() : null
+        var timer = window.setTimeout(function () { if (ctl) ctl.abort(); reject(new Error('timeout')) }, 6000)
+        fetch(url, ctl ? { signal: ctl.signal } : {})
+          .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json() })
+          .then(function (j) { window.clearTimeout(timer); resolve(j) })
+          .catch(function (e) { window.clearTimeout(timer); reject(e) })
+      })
+    }
+
+    getJSON('https://ipinfo.io/json')
+      .then(function (geo) {
+        if (!geo || !geo.loc) throw new Error('no loc')
+        var parts = String(geo.loc).split(',')
+        var lat = parts[0], lon = parts[1]
+        return getJSON('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+          '&current=temperature_2m,weather_code,is_day&timezone=auto')
+          .then(function (w) {
+            var cur = w && w.current
+            if (!cur) throw new Error('no current')
+            var data = {
+              t: Date.now(),
+              temp: Number(cur.temperature_2m),
+              code: Number(cur.weather_code),
+              isDay: Number(cur.is_day) === 1,
+              city: geo.city || geo.region || ''
+            }
+            try { sessionStorage.setItem('encounter-weather', JSON.stringify(data)) } catch (e) {}
+            paint(data)
+          })
+      })
+      .catch(function () { /* 静默失败：不显示，不占位 */ })
+  }
+
   function boot() {
     var f = readFlags()
     markTransitionSupport()
@@ -438,6 +647,10 @@
     }
 
     initIntro()
+    initWeather()
+    initSearch()
+    preventMobileInputZoom()
+    syncSearchWidgetThemeWithRetry()
     initFooterYear()
     initTheme()
     initGradientMask()

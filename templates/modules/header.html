@@ -1,7 +1,30 @@
 <header th:fragment="siteHeader">
   <nav>
     <a th:href="@{/}" th:text="${site.title}">ENCOUNTER</a>
-    <button th:if="${theme.config.basic?.theme_toggle}" type="button" data-theme-toggle
-            class="theme-toggle" aria-label="切换主题">◐</button>
+
+    <div class="header-actions">
+      <span class="weather" data-weather th:if="${theme.config.basic?.weather_enable != false}" hidden>
+        <span class="weather-icon" data-weather-icon aria-hidden="true"></span>
+        <span class="weather-temp" data-weather-temp></span>
+      </span>
+
+      <button type="button" class="header-action" data-search-open
+              th:if="${theme.config.halo?.search_enable != false}"
+              aria-label="搜索" title="搜索（支持快捷键）">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <circle cx="5.2" cy="5.2" r="3.7" stroke="currentColor" stroke-width="1.1"></circle>
+          <path d="M8.1 8.1L11 11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <button type="button" class="header-action theme-toggle" data-theme-toggle
+              th:if="${theme.config.basic?.theme_toggle != false}"
+              aria-label="切换深浅色主题" title="切换深浅色主题">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M6 0.5C9.03757 0.5 11.5 2.96243 11.5 6C11.5 9.03757 9.03757 11.5 6 11.5C2.96243 11.5 0.5 9.03757 0.5 6C0.5 2.96243 2.96243 0.5 6 0.5ZM6 1.84961C3.70802 1.84961 1.84961 3.70802 1.84961 6C1.84961 8.29198 3.70802 10.1504 6 10.1504V1.84961Z"
+                fill="currentColor"></path>
+        </svg>
+      </button>
+    </div>
   </nav>
 </header>
