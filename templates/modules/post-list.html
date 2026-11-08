@@ -1,0 +1,18 @@
+<ul th:fragment="postList(postItems)">
+  <li th:each="post : ${postItems}">
+    <a th:href="@{${post.status.permalink}}">
+      <div class="post-item" th:classappend="${theme.config.date?.date_on_right == false} ? 'date-left'">
+        <p th:if="${theme.config.date?.date_on_right == false}" class="date font-features">
+          <th:block th:replace="~{modules/date :: fmt(${post.spec.publishTime})}"></th:block>
+        </p>
+        <p class="title" th:text="${post.spec.title}"></p>
+        <div th:if="${theme.config.date?.date_on_right != false}"
+             th:class="${theme.config.basic?.post_list_dotted_divider} ? 'dotted-divider' : 'divider'"></div>
+        <p th:if="${theme.config.date?.date_on_right != false}" class="date font-features">
+          <th:block th:replace="~{modules/date :: fmt(${post.spec.publishTime})}"></th:block>
+        </p>
+      </div>
+    </a>
+  </li>
+</ul>
+<div class="placeholder"></div>

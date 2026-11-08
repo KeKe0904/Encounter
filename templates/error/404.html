@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle='页面不存在')}, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <div class="error-container">
+          <h1 class="error-code">404</h1>
+          <p class="error-text">这页好像不存在了</p>
+          <p class="error-back"><a th:href="@{/}">回到首页</a></p>
+        </div>
+  </th:block>
+</html>

@@ -1,0 +1,10 @@
+<th:block th:fragment="fmt(date)"
+  th:with="sep=${theme.config.date?.date_separator ?: '.'},
+           fmtName=${theme.config.date?.date_format ?: 'YYYY-MM-DD'},
+           pattern=${fmtName == 'MM-DD-YYYY' ? 'MM' + sep + 'dd' + sep + 'yyyy'
+                  : (fmtName == 'DD-MM-YYYY' ? 'dd' + sep + 'MM' + sep + 'yyyy'
+                  : (fmtName == 'MONTH DAY YYYY' ? 'MMMM d, yyyy'
+                  : (fmtName == 'DAY MONTH YYYY' ? 'd MMMM yyyy'
+                  : 'yyyy' + sep + 'MM' + sep + 'dd')))}">
+  <time th:datetime="${date}" th:text="${#dates.format(date, pattern)}"></time>
+</th:block>

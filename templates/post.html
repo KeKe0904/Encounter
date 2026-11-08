@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{post-layout :: post(head = ~{modules/head :: head(pageTitle=${post.spec.title})}, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <div class="prose">
+          <a th:href="@{/}" class="back-button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 6.5H9.5C11.1569 6.5 12.5 7.84315 12.5 9.5V9.5C12.5 11.1569 11.1569 12.5 9.5 12.5H7.5M2.5 6.5L5.5 9.5M2.5 6.5L5.5 3.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            index
+          </a>
+          <div class="toc-container" id="toc">
+            <nav class="toc-nav">
+              <ul class="toc-list" id="toc-list">
+                <li class="toc-item toc-level-0">
+                  <a href="#" class="toc-link toc-title" title="Back to top" data-text="Back to top"></a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="title">
+            <h1 th:text="${post.spec.title}"></h1>
+            <div class="date"><th:block th:replace="~{modules/date :: fmt(${post.spec.publishTime})}"></th:block></div>
+          </div>
+          <article class="content" th:utext="${post.content.content}"></article>
+
+          <section class="chiri-comments" th:if="${theme.config.halo?.comment_enable != false}">
+            <h2 class="comment-heading">评论</h2>
+            <halo:comment group="content.halo.run" kind="Post" th:name="${post.metadata.name}" th:group="content.halo.run" />
+          </section>
+        </div>
+  </th:block>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:fragment="html (head, content)"
+      lang="zh-CN" class="light">
+  <head>
+    <th:block th:if="${head != null}">
+      <th:block th:replace="${head}"></th:block>
+    </th:block>
+    <th:block th:if="${head == null}">
+      <th:block th:replace="~{modules/head :: head(null)}"></th:block>
+    </th:block>
+  </head>
+  <body
+    th:attr="data-centered=${theme.config.basic?.centered_layout ?: true},data-fade=${theme.config.basic?.fade_animation ?: true},data-toc=${theme.config.post?.toc ?: true},data-copy=${theme.config.post?.copy_code ?: true},data-viewer=${theme.config.post?.image_viewer ?: true},data-katex=${theme.config.post?.katex ?: true}"
+    th:style="|max-width: ${theme.config.basic?.content_width ?: '35rem'};|">
+    <div class="layout-wrapper">
+      <div class="page-content">
+        <div><th:block th:replace="~{modules/header :: siteHeader}"></th:block></div>
+        <main>
+          <th:block th:replace="${content}" />
+        </main>
+        <div><th:block th:replace="~{modules/footer :: siteFooter}"></th:block></div>
+      </div>
+    </div>
+    <halo:footer />
+  </body>
+</html>

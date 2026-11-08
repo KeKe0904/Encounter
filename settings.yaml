@@ -1,0 +1,94 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: theme-encounter-setting
+spec:
+  forms:
+    - group: basic
+      label: 基本设置
+      formSchema:
+        - $formkit: text
+          name: content_width
+          label: 内容区宽度
+          value: "560px"
+          help: 对应原版的 --content-width / body max-width
+        - $formkit: checkbox
+          name: centered_layout
+          label: 居中布局
+          value: true
+        - $formkit: checkbox
+          name: theme_toggle
+          label: 显示主题切换按钮
+          value: false
+        - $formkit: checkbox
+          name: post_list_dotted_divider
+          label: 列表使用点状分隔线
+          value: false
+        - $formkit: checkbox
+          name: footer
+          label: 显示页脚
+          value: true
+        - $formkit: checkbox
+          name: fade_animation
+          label: 启用淡入动画
+          value: true
+    - group: date
+      label: 日期设置
+      formSchema:
+        - $formkit: select
+          name: date_format
+          label: 日期格式
+          value: "YYYY-MM-DD"
+          options:
+            - label: YYYY-MM-DD
+              value: "YYYY-MM-DD"
+            - label: MM-DD-YYYY
+              value: "MM-DD-YYYY"
+            - label: DD-MM-YYYY
+              value: "DD-MM-YYYY"
+            - label: MONTH DAY YYYY
+              value: "MONTH DAY YYYY"
+            - label: DAY MONTH YYYY
+              value: "DAY MONTH YYYY"
+        - $formkit: text
+          name: date_separator
+          label: 日期分隔符
+          value: "."
+        - $formkit: checkbox
+          name: date_on_right
+          label: 日期在右侧
+          value: true
+    - group: post
+      label: 文章设置
+      formSchema:
+        - $formkit: checkbox
+          name: toc
+          label: 显示目录
+          value: true
+        - $formkit: checkbox
+          name: reading_time
+          label: 显示阅读时长
+          value: false
+        - $formkit: checkbox
+          name: image_viewer
+          label: 图片查看器
+          value: true
+        - $formkit: checkbox
+          name: copy_code
+          label: 代码块复制按钮
+          value: true
+        - $formkit: checkbox
+          name: katex
+          label: 启用 KaTeX 公式
+          value: true
+    - group: halo
+      label: Halo 能力（原版没有，按原版版式内嵌）
+      formSchema:
+        - $formkit: checkbox
+          name: comment_enable
+          label: 启用评论
+          value: true
+        - $formkit: checkbox
+          name: search_enable
+          label: 启用搜索入口
+          value: true

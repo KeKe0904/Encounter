@@ -1,0 +1,11 @@
+<footer th:fragment="siteFooter" th:if="${theme.config.basic?.footer != false}">
+  <div class="footer-content">
+    <div class="copyright">
+      <span class="date">&copy;</span>
+      <span th:text="${site.title}"></span>
+    </div>
+    <div class="powered-by">
+      Powered by <a href="https://halo.run" target="_blank" rel="noopener">Halo</a> + <a href="https://github.com/the3ash/astro-chiri" target="_blank" rel="noopener">Chiri</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{post-layout :: post(head = ~{modules/head :: head(pageTitle=${singlePage.spec.title})}, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <div class="prose page-about">
+          <a th:href="@{/}" class="back-button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 6.5H9.5C11.1569 6.5 12.5 7.84315 12.5 9.5V9.5C12.5 11.1569 11.1569 12.5 9.5 12.5H7.5M2.5 6.5L5.5 9.5M2.5 6.5L5.5 3.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            index
+          </a>
+          <div class="title"><h1 th:text="${singlePage.spec.title}"></h1></div>
+          <article class="content" th:utext="${singlePage.content.content}"></article>
+        </div>
+  </th:block>
+</html>

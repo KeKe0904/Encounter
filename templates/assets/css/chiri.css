@@ -1,0 +1,480 @@
+/* Chiri for Halo —— 主题补充样式
+ * 1-6：动效层（严格对齐原版参数）
+ * 7-9：Halo 侧新增页面元素（按原版设计语言延伸）
+ */
+
+/* ============ 1. 跨文档视图转场 ============ */
+
+@view-transition {
+  navigation: auto;
+}
+
+@supports (view-transition-name: none) {
+  @media not (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root) {
+      animation: chiri-fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    ::view-transition-new(root) {
+      opacity: 0;
+      animation: chiri-fade-in 0.4s ease 0.2s forwards;
+      will-change: filter, opacity, transform;
+    }
+  }
+}
+
+@keyframes chiri-fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes chiri-fade-in {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateZ(0);
+  }
+  30% {
+    opacity: 0.5;
+    filter: blur(4px);
+    transform: translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateZ(0);
+  }
+}
+
+/* 非安全上下文（http://IP）不支持 View Transition，用整页淡入降级 */
+.no-vt body {
+  animation: chiri-fade-in 0.5s ease 0.05s both;
+}
+
+/* ============ 2. 顶部滚动遮罩（原版 GradientMask） ============ */
+
+.gradient-mask {
+  --gradient-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.738) 19%,
+    rgba(0, 0, 0, 0.541) 34%,
+    rgba(0, 0, 0, 0.382) 47%,
+    rgba(0, 0, 0, 0.278) 56.5%,
+    rgba(0, 0, 0, 0.194) 65%,
+    rgba(0, 0, 0, 0.126) 73%,
+    rgba(0, 0, 0, 0.075) 80.2%,
+    rgba(0, 0, 0, 0.042) 86.1%,
+    rgba(0, 0, 0, 0.021) 91%,
+    rgba(0, 0, 0, 0.008) 95.2%,
+    rgba(0, 0, 0, 0.002) 98.2%,
+    transparent 100%
+  );
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  z-index: 99;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.gradient-mask__blur,
+.gradient-mask__background {
+  position: absolute;
+  inset: 0;
+  mask-image: var(--gradient-mask-image);
+  -webkit-mask-image: var(--gradient-mask-image);
+}
+
+.gradient-mask__blur {
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+.gradient-mask__background {
+  background-color: var(--bg);
+  transition: background-color 0.2s ease-out;
+}
+
+@media (min-width: 768px) {
+  .gradient-mask {
+    height: 4rem;
+  }
+}
+
+/* ============ 3. 代码复制按钮（原版 CopyCode） ============ */
+
+.copy-code-wrapper {
+  position: relative !important;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  z-index: 10;
+  background: var(--bg);
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(48px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.copy-code-wrapper:hover .copy-button,
+.copy-button:focus-visible,
+.copy-button[data-copy-state='copied'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.copy-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--code-bg);
+  border-radius: 0.325rem;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  pointer-events: none;
+}
+
+.copy-button:hover::before {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  color: var(--text-primary);
+}
+
+/* ============ 4. 图片查看器（原版 ImageViewer） ============ */
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease-out,
+    visibility 0s linear 0.15s;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.image-viewer.active {
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity 0.15s ease-out,
+    visibility 0s ease-out;
+}
+
+.post-container .content img[data-preview='true'] {
+  cursor: pointer;
+}
+
+.image-viewer img {
+  min-width: 45rem;
+  max-width: 60vw;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .image-viewer img {
+    min-width: 100vw;
+  }
+}
+
+body.image-viewer-open {
+  overflow: hidden;
+}
+
+/* ============ 5. 目录浮现 ============ */
+
+.toc-container.fixed-position {
+  animation: chiri-toc-in 0.35s ease 0.25s both;
+}
+
+@keyframes chiri-toc-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toc-link.active::after {
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+/* ============ 6. 减少动态效果 ============ */
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  .no-vt body,
+  .toc-container.fixed-position {
+    animation: none !important;
+  }
+}
+
+/* ============ 7. 新增页面元素（原版没有，按原版语言延伸） ============ */
+
+.page-title {
+  margin: 0 0 1.5rem;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.archive-group + .archive-group {
+  margin-top: 2rem;
+}
+
+.archive-year {
+  margin: 0 0 0.5rem;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-light);
+  letter-spacing: var(--spacing-s);
+  color: var(--text-tertiary);
+}
+
+.chiri-pager {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+  font-size: var(--font-size-s);
+  color: var(--text-secondary);
+}
+
+.chiri-pager a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+}
+
+.chiri-pager a:hover {
+  color: var(--text-primary);
+}
+
+.chiri-pager a.is-disabled {
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.error-container {
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.error-code {
+  font-size: var(--font-size-l);
+  font-weight: 500;
+  margin: 0 0 1rem;
+}
+
+.error-text {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.error-back {
+  margin-top: 2rem;
+}
+
+.error-back a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+}
+
+.error-back a:hover {
+  color: var(--text-primary);
+}
+
+/* ============ 8. 主题切换按钮（原版 ThemeToggle） ============ */
+
+.site-header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--font-size-s);
+  color: var(--text-secondary);
+  opacity: 0.7;
+  transition:
+    opacity 0.2s ease-out,
+    color 0.2s ease-out;
+}
+
+.theme-toggle:hover {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+/* 阅读时长 */
+.reading-time {
+  margin-left: 0.35rem;
+  color: var(--text-secondary);
+  opacity: 0.75;
+}
+
+/* ============ 9. 评论区（Halo 能力，按原版版式排布） ============ */
+
+.chiri-comments {
+  position: relative; /* 骨架 ::after 需要相对本区域定位 */
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--sans);
+  font-size: var(--font-size-m);
+  line-height: 1.75;
+  letter-spacing: var(--spacing-m);
+
+  /* 把 Halo 评论组件的色板接到 Chiri 的语义色上 */
+  --halo-cw-text-1-color: var(--text-primary);
+  --halo-cw-text-2-color: var(--text-primary);
+  --halo-cw-text-3-color: var(--text-secondary);
+  --halo-cw-muted-1-color: var(--text-tertiary);
+  --halo-cw-muted-2-color: var(--text-secondary);
+  --halo-cw-muted-3-color: var(--text-primary);
+  --halo-cw-primary-1-color: var(--text-primary);
+  --halo-cw-primary-2-color: var(--text-primary);
+  --halo-cw-primary-3-color: var(--text-secondary);
+  --halo-cw-emoji-picker-rgb-accent: 0, 0, 0;
+  --halo-cw-emoji-picker-rgb-background: 255, 255, 255;
+  --halo-cw-emoji-picker-rgb-color: 0, 0, 0;
+}
+
+html.dark .chiri-comments {
+  --halo-cw-emoji-picker-rgb-accent: 255, 255, 255;
+  --halo-cw-emoji-picker-rgb-background: 28, 28, 28;
+  --halo-cw-emoji-picker-rgb-color: 255, 255, 255;
+}
+
+/* 评论内容注入前：占位骨架，避免加载完成瞬间撑开页面 */
+.chiri-comments > div {
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out;
+}
+
+.chiri-comments.is-loading > div {
+  opacity: 0;
+}
+
+.chiri-comments.is-loading::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 4.5rem;
+  height: 9rem;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--border) 25%, transparent 37%, var(--border) 63%);
+  background-size: 400% 100%;
+  animation: chiri-skeleton 1.4s ease infinite;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@keyframes chiri-skeleton {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* 注入完成后淡入上移，替代原来的硬切入 */
+.chiri-comments > div.is-ready {
+  animation: chiri-comment-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes chiri-comment-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chiri-comments.is-loading::after,
+  .chiri-comments > div.is-ready {
+    animation: none !important;
+  }
+}
+
+/* 评论区标题（Halo 能力按原版排版语言补入） */
+.comment-heading {
+  margin: 0 0 1.5rem;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary);
+  letter-spacing: var(--spacing-m);
+}
+
+/* 让输入框与按钮的圆角、字重贴近 Chiri 的克制风格 */
+.chiri-comments textarea,
+.chiri-comments input {
+  font-family: var(--sans);
+}
+
+
+/* ============ 10. 首屏背景兜底 ============
+   避免样式未就绪 / 视图转场瞬间出现黑块 */
+html {
+  background-color: var(--bg, #ffffff);
+}
+
+html.dark {
+  background-color: var(--bg, #1c1c1c);
+}
+
+::view-transition {
+  background-color: var(--bg, #ffffff);
+}

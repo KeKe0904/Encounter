@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout :: html(head = null, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <h2 class="page-title">归档</h2>
+        <section th:each="archive : ${archives.items}" class="archive-group">
+          <h3 class="archive-year" th:text="${archive.year}"></h3>
+          <th:block th:each="month : ${archive.months}">
+            <th:block th:replace="~{modules/post-list :: postList(${month.posts})}"></th:block>
+          </th:block>
+        </section>
+        <p th:if="${archives.items.isEmpty()}">还没有文章</p>
+  </th:block>
+</html>

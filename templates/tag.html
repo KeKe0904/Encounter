@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout :: html(head = null, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <a th:href="@{/}" class="back-button" style="display:inline-block;margin-bottom:2rem">&larr; index</a>
+        <h2 class="page-title" th:text="${tag.spec.displayName}"></h2>
+        <th:block th:replace="~{modules/post-list :: postList(${posts.items})}"></th:block>
+        <nav class="chiri-pager" th:if="${posts.hasPrevious() or posts.hasNext()}">
+          <a th:href="@{'/tags/' + ${tag.spec.slug} + '/page/' + ${posts.page - 1}}"
+             th:classappend="${!posts.hasPrevious()} ? 'is-disabled'">&larr; 上一页</a>
+          <a th:href="@{'/tags/' + ${tag.spec.slug} + '/page/' + ${posts.page + 1}}"
+             th:classappend="${!posts.hasNext()} ? 'is-disabled'">下一页 &rarr;</a>
+        </nav>
+  </th:block>
+</html>

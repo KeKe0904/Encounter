@@ -1,0 +1,7 @@
+<header th:fragment="siteHeader">
+  <nav>
+    <a th:href="@{/}" th:text="${site.title}">CHIRI</a>
+    <button th:if="${theme.config.basic?.theme_toggle}" type="button" data-theme-toggle
+            class="theme-toggle" aria-label="切换主题">◐</button>
+  </nav>
+</header>
