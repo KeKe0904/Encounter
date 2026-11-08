@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.1.0.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.0/theme-encounter-0.1.0.zip)
+> **直接下载安装包**：[theme-encounter-0.1.1.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.1/theme-encounter-0.1.1.zip)
 
-当前版本 **0.1.0** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.1.1** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -31,6 +31,20 @@
 ### 404
 
 ![404](docs/screenshots/404.png)
+
+---
+
+## 更新日志
+
+### 0.1.1
+
+- 新增**首页简介区域**（对应原版 `About` 组件）：主题设置里可编辑，支持 HTML，留空回退站点描述
+- 新增线条风主题 logo（`logo.svg`，`stroke: currentColor` 自适应深浅色）
+- 全站更名 Encounter：资源文件、类名、animations 前缀、localStorage key
+
+### 0.1.0
+
+- 首个版本：单列窄栏排版、深浅色、跨页面转场、目录、代码复制、图片查看器、KaTeX、评论、归档/标签/分类/404/关于页
 
 ---
 
@@ -100,7 +114,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.0.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.1.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 

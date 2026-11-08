@@ -2,6 +2,12 @@
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{layout :: html(head = null, content = ~{::content})}">
   <th:block th:fragment="content">
+        <th:block th:with="intro=${theme.config.basic?.intro}">
+          <div class="about prose" th:if="${intro != null and #strings.length(intro) > 0}" th:utext="${intro}"></div>
+          <div class="about prose" th:if="${(intro == null or #strings.length(intro) == 0) and #strings.length(site.description) > 0}">
+            <p th:text="${site.description}"></p>
+          </div>
+        </th:block>
         <th:block th:replace="~{modules/post-list :: postList(${posts.items})}"></th:block>
         <p th:if="${posts.total == 0}">还没有文章</p>
   </th:block>

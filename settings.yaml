@@ -20,6 +20,12 @@ spec:
           name: theme_toggle
           label: 显示主题切换按钮
           value: false
+        - $formkit: textarea
+          name: intro
+          label: 首页简介
+          value: "这里是 Encounter，一个安静的角落。\n记录日常、读书，和一些没头没尾的想法。"
+          rows: 4
+          help: 显示在首页文章列表上方，支持 HTML；留空则回退到站点描述
         - $formkit: checkbox
           name: post_list_dotted_divider
           label: 列表使用点状分隔线

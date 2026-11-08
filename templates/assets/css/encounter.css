@@ -478,3 +478,20 @@ html.dark {
 ::view-transition {
   background-color: var(--bg, #ffffff);
 }
+
+/* 首页简介区域（对应原版 About 组件） */
+.about {
+  color: var(--text-secondary);
+}
+
+.about:not(:empty) {
+  margin-bottom: 1.25rem;
+}
+
+.about > :first-child {
+  margin-top: 0;
+}
+
+.about > :last-child {
+  margin-bottom: 0;
+}

@@ -402,6 +402,24 @@
       .catch(function () {})
   }
 
+  /* ---------------- 首页简介（对应原版 About 组件） ----------------
+     纯文本按空行/换行拆成段落；主人自己写了 HTML 就原样保留 */
+  function initIntro() {
+    var box = document.querySelector('.about')
+    if (!box) return
+    if (box.children.length > 0) return
+    var text = (box.textContent || '').trim()
+    if (!text) return
+    var lines = text.split(/\n+/).map(function (l) { return l.trim() }).filter(Boolean)
+    if (lines.length === 0) return
+    box.innerHTML = ''
+    lines.forEach(function (line) {
+      var p = document.createElement('p')
+      p.textContent = line
+      box.appendChild(p)
+    })
+  }
+
   function boot() {
     var f = readFlags()
     markTransitionSupport()
@@ -413,6 +431,7 @@
       document.head.appendChild(st)
     }
 
+    initIntro()
     initTheme()
     initGradientMask()
     if (f.toc) initToc()
