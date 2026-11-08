@@ -100,6 +100,26 @@ spec:
           name: comment_enable
           label: 启用评论
           value: true
+        - $formkit: select
+          name: like_permission
+          label: 点赞权限
+          value: all
+          options:
+            - label: 所有人（含游客）
+              value: all
+            - label: 仅登录用户
+              value: login
+          help: 控制文章与瞬间的点赞，可与评论权限分别设置
+        - $formkit: select
+          name: comment_permission
+          label: 评论权限
+          value: all
+          options:
+            - label: 所有人（含游客）
+              value: all
+            - label: 仅登录用户
+              value: login
+          help: 控制文章与瞬间的评论，可与点赞权限分别设置
         - $formkit: checkbox
           name: search_enable
           label: 启用搜索入口

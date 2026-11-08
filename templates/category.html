@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{layout :: html(head = null, content = ~{::content})}">
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle=${category.spec.displayName}, pageDescription=null, pageImage=null, pagePath=${category.status.permalink}, pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
   <th:block th:fragment="content">
-        <a th:href="@{/}" class="back-button" style="display:inline-block;margin-bottom:2rem">&larr; index</a>
+        <a th:href="@{/}" class="back-button page-back">&larr; index</a>
         <h2 class="page-title" th:text="${category.spec.displayName}"></h2>
         <th:block th:replace="~{modules/post-list :: postList(${posts.items})}"></th:block>
         <nav class="encounter-pager" th:if="${posts.hasPrevious() or posts.hasNext()}">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{layout :: html(head = null, content = ~{::content})}">
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle=null, pageDescription=${theme.config.basic?.intro != null ? #strings.replace(#strings.replace(theme.config.basic.intro, '<p>', ''), '</p>', ' ') : null}, pageImage=null, pagePath='/', pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
   <th:block th:fragment="content">
         <th:block th:with="intro=${theme.config.basic?.intro}">
           <div class="about prose" th:if="${intro != null and #strings.length(intro) > 0}" th:utext="${intro}"></div>

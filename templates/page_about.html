@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{post-layout :: post(head = ~{modules/head :: head(pageTitle=${singlePage.spec.title})}, content = ~{::content})}">
+      th:replace="~{post-layout :: post(head = ~{modules/head :: head(pageTitle=${singlePage.spec.title}, pageDescription=${singlePage.status?.excerpt ?: ''}, pageImage=${singlePage.spec.cover ?: ''}, pagePath=${singlePage.status?.permalink}, pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
   <th:block th:fragment="content">
         <div class="prose page-about">
           <a th:href="@{/}" class="back-button">

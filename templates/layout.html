@@ -7,7 +7,7 @@
       <th:block th:replace="${head}"></th:block>
     </th:block>
     <th:block th:if="${head == null}">
-      <th:block th:replace="~{modules/head :: head(null)}"></th:block>
+      <th:block th:replace="~{modules/head :: head(null, null, null, null, null, null, null, null)}"></th:block>
     </th:block>
   </head>
   <body
@@ -22,6 +22,7 @@
         <div><th:block th:replace="~{modules/footer :: siteFooter}"></th:block></div>
       </div>
     </div>
+    <th:block th:replace="~{modules/menu-panel :: panel}"></th:block>
     <halo:footer />
   </body>
 </html>

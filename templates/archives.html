@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{layout :: html(head = null, content = ~{::content})}">
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle='归档', pageDescription=null, pageImage=null, pagePath='/archives', pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
   <th:block th:fragment="content">
         <h2 class="page-title">归档</h2>
         <section th:each="archive : ${archives.items}" class="archive-group">

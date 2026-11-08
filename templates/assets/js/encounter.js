@@ -224,15 +224,18 @@
     })
   }
 
-  /* ---------------- 图片查看器（ImageViewer） ---------------- */
+  /* ---------------- 图片查看器（ImageViewer） ----------------
+     覆盖文章正文与瞬间图片；同一组图片可用 ←/→ 翻看，不跳新窗口 */
   function initImageViewer() {
     var images = Array.prototype.slice.call(
-      document.querySelectorAll('.post-container .content img')
+      document.querySelectorAll('.post-container .content img, .moment-content img, .moment-media img')
     )
     if (!images.length) return
 
     var viewer = null
     var bigImg = null
+    var group = []
+    var index = 0
 
     // 懒创建：不打开时不往 DOM 里放容器，
     // 否则 backdrop-filter 会在部分浏览器里留下一块异常底色
@@ -253,6 +256,22 @@
       return viewer
     }
 
+    function show(i) {
+      if (!group.length) return
+      index = (i + group.length) % group.length
+      var img = group[index]
+      bigImg.src = img.currentSrc || img.src
+    }
+
+    function open(img) {
+      var scope = img.closest('.moment-media')
+      group = scope ? Array.prototype.slice.call(scope.querySelectorAll('img')) : [img]
+      ensureViewer()
+      show(Math.max(0, group.indexOf(img)))
+      viewer.classList.add('active')
+      document.body.classList.add('image-viewer-open')
+    }
+
     function close() {
       if (!viewer) return
       viewer.classList.remove('active')
@@ -260,16 +279,26 @@
     }
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close()
+      if (!viewer || !viewer.classList.contains('active')) return
+      if (e.key === 'Escape') {
+        close()
+        return
+      }
+      if (group.length < 2) return
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        show(index - 1)
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        show(index + 1)
+      }
     })
 
     images.forEach(function (img) {
       img.setAttribute('data-preview', 'true')
-      img.addEventListener('click', function () {
-        ensureViewer()
-        bigImg.src = img.currentSrc || img.src
-        viewer.classList.add('active')
-        document.body.classList.add('image-viewer-open')
+      img.addEventListener('click', function (e) {
+        if (img.closest('a')) e.preventDefault()
+        open(img)
       })
     })
   }
@@ -635,6 +664,237 @@
       .catch(function () { /* 静默失败：不显示，不占位 */ })
   }
 
+  /* ---------------- 站内导航面板（Halo 主菜单） ----------------
+     入口是页头汉堡按钮，交互与搜索弹窗保持一致：
+     遮罩点击 / Esc 关闭，↑↓ 在多条链接间移动 */
+  function initMenu() {
+    var trigger = document.querySelector('[data-menu-open]')
+    var modal = document.querySelector('[data-menu-modal]')
+    if (!trigger || !modal) return
+
+    var lastFocus = null
+
+    function links() {
+      return Array.prototype.slice.call(modal.querySelectorAll('.menu-link'))
+    }
+
+    function open() {
+      lastFocus = document.activeElement
+      modal.hidden = false
+      document.body.classList.add('menu-open')
+      var first = links()[0]
+      if (first) first.focus()
+    }
+
+    function close() {
+      if (modal.hidden) return
+      modal.hidden = true
+      document.body.classList.remove('menu-open')
+      if (lastFocus && lastFocus.focus) lastFocus.focus()
+    }
+
+    trigger.addEventListener('click', function (e) {
+      e.preventDefault()
+      if (modal.hidden) open()
+      else close()
+    })
+
+    modal.addEventListener('click', function (e) {
+      if (e.target.closest('[data-menu-close]')) close()
+    })
+
+    document.addEventListener('keydown', function (e) {
+      if (modal.hidden) return
+      if (e.key === 'Escape') { e.preventDefault(); close(); return }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        var list = links()
+        if (!list.length) return
+        var idx = list.indexOf(document.activeElement)
+        var next = e.key === 'ArrowDown' ? (idx + 1) % list.length : (idx - 1 + list.length) % list.length
+        if (idx === -1) next = 0
+        list[next].focus()
+      }
+    })
+  }
+
+  /* ---------------- 瞬间：评论展开 ---------------- */
+  function initMoments() {
+    // 瞬间时间按访客本地时区显示
+    var times = document.querySelectorAll('.moment-time[data-time]')
+    Array.prototype.forEach.call(times, function (el) {
+      var raw = el.getAttribute('data-time')
+      if (!raw) return
+      var d = new Date(raw)
+      if (isNaN(d.getTime())) return
+      var p2 = function (n) { return n < 10 ? '0' + n : '' + n }
+      el.textContent = d.getFullYear() + '.' + p2(d.getMonth() + 1) + '.' + p2(d.getDate()) + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes())
+    })
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-moment-comment]')
+      if (!btn) return
+      var article = btn.closest('.moment')
+      if (!article) return
+      var box = article.querySelector('.moment-comments')
+      if (!box) return
+      e.preventDefault()
+      box.hidden = !box.hidden
+      btn.classList.toggle('is-open', !box.hidden)
+    })
+  }
+
+  /* ---------------- 点赞 / 评论权限 ----------------
+     权限在主题设置里分开配置（所有人 / 仅登录用户）。
+     登录态用 /users/- 探测：未登录会返回 anonymousUser。 */
+  function initInteractions() {
+    var likes = Array.prototype.slice.call(document.querySelectorAll('[data-upvote]'))
+    var gates = Array.prototype.slice.call(document.querySelectorAll('[data-comment-gate]'))
+    if (!likes.length && !gates.length) return
+
+    var isGuest = true
+
+    function applyGate(guest) {
+      gates.forEach(function (gate) {
+        var widget = gate.parentElement ? gate.parentElement.querySelector('.comment-widget') : null
+        if (guest) {
+          gate.hidden = false
+          if (widget) widget.style.display = 'none'
+        } else {
+          gate.hidden = true
+          if (widget) widget.style.display = ''
+        }
+      })
+    }
+
+    likes.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.getAttribute('data-require-login') === 'true' && isGuest) {
+          window.location.href = '/login'
+          return
+        }
+        if (btn.classList.contains('is-active') || btn.getAttribute('data-busy')) return
+        btn.setAttribute('data-busy', '1')
+        var payload = {
+          group: btn.getAttribute('data-group') || '',
+          plural: btn.getAttribute('data-plural') || 'posts',
+          name: btn.getAttribute('data-name')
+        }
+        fetch('/apis/api.halo.run/v1alpha1/trackers/upvote', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+          .then(function (r) {
+            if (!r.ok) throw new Error('upvote failed')
+            var count = btn.querySelector('[data-upvote-count]')
+            if (count) count.textContent = (parseInt(count.textContent, 10) || 0) + 1
+            btn.classList.add('is-active')
+          })
+          .catch(function () {})
+          .then(function () { btn.removeAttribute('data-busy') })
+      })
+    })
+
+    var needProbe = gates.length > 0 || likes.some(function (b) {
+      return b.getAttribute('data-require-login') === 'true'
+    })
+
+    if (!needProbe) {
+      isGuest = false
+      applyGate(false)
+      return
+    }
+
+    fetch('/apis/api.console.halo.run/v1alpha1/users/-', { credentials: 'include' })
+      .then(function (r) { return r.ok ? r.json() : null })
+      .then(function (data) {
+        var name = data && data.user && data.user.metadata ? data.user.metadata.name : ''
+        isGuest = !name || name === 'anonymousUser'
+        applyGate(isGuest)
+      })
+      .catch(function () {})
+  }
+
+  /* ---------------- 评论表单：只保留邮箱 ----------------
+     评论组件在 shadow DOM 里，昵称/网站是必填或多余字段。
+     这里把昵称、网站隐藏，提交前用邮箱前缀自动填昵称。 */
+  function deepQuery(selector, root, depth) {
+    var scope = root || document
+    var level = depth || 0
+    if (level > 6) return null
+    var hit = scope.querySelector(selector)
+    if (hit) return hit
+    var all = scope.querySelectorAll('*')
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].shadowRoot) {
+        var found = deepQuery(selector, all[i].shadowRoot, level + 1)
+        if (found) return found
+      }
+    }
+    return null
+  }
+
+  function initCommentForm() {
+    var tries = 0
+    var timer = window.setInterval(function () {
+      var email = deepQuery('input[name="email"]')
+      var nick = deepQuery('input[name="displayName"]')
+      if (!email || !nick) {
+        if (++tries > 60) window.clearInterval(timer)
+        return
+      }
+      window.clearInterval(timer)
+
+      // 邮箱标星号，明确表示必填
+      email.setAttribute('required', 'required')
+      email.title = '必填'
+      if ((email.placeholder || '').indexOf('*') === -1) {
+        email.placeholder = (email.placeholder || '电子邮件') + ' *'
+      }
+
+      // 昵称、网站保留展示，但不再强制填写（邮箱必填）
+      var site = deepQuery('input[name="website"]')
+      ;[nick, site].forEach(function (el) {
+        if (!el) return
+        el.removeAttribute('required')
+      })
+
+      var autoNick = ''
+      var setValue = function (el, val) {
+        var setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set
+        setter.call(el, val)
+        el.dispatchEvent(new Event('input', { bubbles: true }))
+        el.dispatchEvent(new Event('change', { bubbles: true }))
+      }
+
+      var sync = function () {
+        var v = (email.value || '').trim()
+        if (!v) return
+        var prefix = v.indexOf('@') > 0 ? v.split('@')[0] : v
+        if (!prefix) return
+        if (!nick.value || nick.value === autoNick) {
+          autoNick = prefix
+          setValue(nick, prefix)
+        }
+      }
+
+      email.addEventListener('input', sync)
+      email.addEventListener('change', sync)
+      email.addEventListener('blur', sync)
+      document.addEventListener('click', function (e) {
+        var t = e.target
+        var label = ''
+        if (t && t.closest) {
+          var btn = t.closest('button')
+          if (btn) label = btn.textContent || ''
+        }
+        if (/提交|发送|回复/.test(label)) sync()
+      }, true)
+    }, 300)
+  }
+
   function boot() {
     var f = readFlags()
     markTransitionSupport()
@@ -647,6 +907,10 @@
     }
 
     initIntro()
+    initCommentForm()
+    initInteractions()
+    initMoments()
+    initMenu()
     initWeather()
     initSearch()
     preventMobileInputZoom()

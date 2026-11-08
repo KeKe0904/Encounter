@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{layout :: html(head = null, content = ~{::content})}">
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle='分类', pageDescription=null, pageImage=null, pagePath='/categories', pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
   <th:block th:fragment="content">
         <h2 class="page-title">分类</h2>
-        <ul>
+        <ul class="post-list">
           <li th:each="category : ${categoryFinder.listAll()}">
             <a th:href="@{${category.status.permalink}}">
               <div class="post-item">

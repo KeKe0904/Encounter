@@ -6,15 +6,15 @@ spec:
   logo: https://cdn.jsdelivr.net/gh/KeKe0904/Encounter@main/logo.svg
   displayName: "Encounter"
   author:
-    name: 3ASH / Halo 移植版
-    website: https://github.com/the3ash/astro-chiri
-  description: Encounter —— 基于 Chiri 移植到 Halo 2.27 的极简博客主题。
+    name: KeKe0904
+    website: https://github.com/KeKe0904
+  description: Encounter —— 极简博客主题，设计灵感来自 astro-chiri，为 Halo 2.27 全新实现。
   homepage: https://github.com/KeKe0904/Encounter
   repo: https://github.com/KeKe0904/Encounter
   issues: https://github.com/KeKe0904/Encounter/issues
   settingName: "theme-encounter-setting"
   configMapName: "theme-encounter-configmap"
-  version: 0.1.3
+  version: 0.1.4
   requires: ">=2.27.0"
   license:
     - name: "MIT"

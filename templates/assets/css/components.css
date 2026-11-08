@@ -1365,7 +1365,7 @@ header {
   }
 
 /* ===== components/widgets/PostList.astro ===== */
-main > ul {
+.post-list {
     padding: 0;
     margin: 0;
     list-style-type: none;
@@ -1373,7 +1373,7 @@ main > ul {
     flex-direction: column;
     gap: 0;
   }
-main > ul a {
+.post-list a {
     color: var(--text-primary);
     display: block;
     text-decoration: none;
@@ -1381,22 +1381,22 @@ main > ul a {
   }
 
   @media (hover: hover) and (pointer: fine) {
-    main > ul:hover a {
+    .post-list:hover a {
       opacity: 0.4;
     }
 
-    main > ul:hover a:hover {
+    .post-list:hover a:hover {
       opacity: 1;
     }
 
-    main > ul:hover a:hover .divider {
+    .post-list:hover a:hover .divider {
       background-color: var(--text-tertiary);
       opacity: 0.75;
     }
-    main > ul:hover a:hover .dotted-divider {
+    .post-list:hover a:hover .dotted-divider {
       color: var(--text-secondary);
     }
-    main > ul:hover a:hover .date {
+    .post-list:hover a:hover .date {
       color: var(--text-secondary);
       opacity: 1;
     }

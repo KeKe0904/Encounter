@@ -1,4 +1,4 @@
-<ul th:fragment="postList(postItems)">
+<ul class="post-list" th:fragment="postList(postItems)">
   <li th:each="post : ${postItems}">
     <a th:href="@{${post.status.permalink}}">
       <div class="post-item" th:classappend="${theme.config.date?.date_on_right == false} ? 'date-left'">

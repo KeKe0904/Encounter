@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle='瞬间', pageDescription=null, pageImage=null, pagePath='/moments', pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <h2 class="page-title">瞬间</h2>
+
+        <div class="moment-list" th:if="${not #lists.isEmpty(moments.items)}">
+          <article class="moment" th:each="moment : ${moments.items}">
+            <header class="moment-head">
+              <img class="moment-avatar" th:if="${moment.owner.avatar != null}"
+                   th:src="${moment.owner.avatar}" alt="" loading="lazy" />
+              <span class="moment-name" th:text="${moment.owner.displayName ?: '匿名'}"></span>
+              <time class="moment-time" th:attr="data-time=${moment.spec.releaseTime}"></time>
+            </header>
+
+            <div class="moment-content" th:utext="${moment.spec.content.html}"></div>
+
+            <div class="moment-media" th:classappend="${#lists.size(moment.spec.content.medium) == 1} ? 'is-single'"
+                 th:if="${moment.spec.content.medium != null and not #lists.isEmpty(moment.spec.content.medium)}">
+              <a class="moment-media-item" th:each="media : ${moment.spec.content.medium}"
+                 th:href="${media.url}">
+                <img th:src="${media.url}" alt="" loading="lazy" />
+              </a>
+            </div>
+
+            <footer class="moment-foot">
+              <button type="button" class="like-button like-button--small" data-upvote
+                      data-group="moment.halo.run" data-plural="moments"
+                      th:attr="data-name=${moment.metadata.name},data-require-login=${theme.config.halo?.like_permission == 'login'}"
+                      aria-label="点赞">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 13.5S2.5 10.2 2.5 6.4A3.4 3.4 0 0 1 8 4.2a3.4 3.4 0 0 1 5.5 2.2c0 3.8-5.5 7.1-5.5 7.1Z"
+                        stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path>
+                </svg>
+                <span class="like-count" data-upvote-count th:text="${moment.stats != null ? (moment.stats.upvote ?: 0) : 0}">0</span>
+              </button>
+              <button type="button" class="moment-comment-toggle" data-moment-comment>
+                评论<span class="moment-comment-count" th:text="${moment.stats != null ? (moment.stats.approvedComment ?: 0) : 0}"></span>
+              </button>
+            </footer>
+
+            <div class="moment-comments" hidden>
+              <div class="comment-gate" data-comment-gate th:if="${theme.config.halo?.comment_permission == 'login'}" hidden>
+                <a th:href="@{/login}" class="comment-gate-link">登录后参与评论</a>
+              </div>
+              <div class="comment-widget" th:classappend="${theme.config.halo?.comment_permission == 'login'} ? 'is-auth-only'">
+                <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}" />
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="moment-empty" th:if="${#lists.isEmpty(moments.items)}">还没有瞬间</p>
+
+        <div class="placeholder"></div>
+
+        <nav class="encounter-pager" th:if="${moments.hasPrevious() or moments.hasNext()}">
+          <a th:href="@{'/moments/page/' + (${moments.page} - 1)}"
+             th:classappend="${!moments.hasPrevious()} ? 'is-disabled'">&larr; 上一页</a>
+          <a th:href="@{'/moments/page/' + (${moments.page} + 1)}"
+             th:classappend="${!moments.hasNext()} ? 'is-disabled'">下一页 &rarr;</a>
+        </nav>
+  </th:block>
+</html>

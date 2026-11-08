@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.1.3.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.3/theme-encounter-0.1.3.zip)
+> **直接下载安装包**：[theme-encounter-0.1.4.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.4/theme-encounter-0.1.4.zip)
 
-当前版本 **0.1.3** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.1.4** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,18 @@
 ---
 
 ## 更新日志
+
+### 0.1.4
+
+- 新增**站内导航**：右上角汉堡入口 + 浮层面板，接 Halo 「菜单」配置，支持二级菜单，键盘 ↑↓/↵/ESC 可用，菜单为空时入口自动隐藏
+- 新增**瞬间页**：适配 `plugin-moments`，按主题排版（头像、时间、正文、图片网格、评论展开、分页）
+- 新增**点赞**：文章与瞬间均可点赞，同一组图片支持灯箱内左右翻看
+- 新增**互动权限**：点赞、评论可分别设置为「所有人（含游客）」或「仅登录用户」
+- **评论表单**：邮箱必填并标注 `*`，昵称/网站可留空，昵称为空时自动取邮箱前缀
+- **SEO 增强**：canonical、robots、Open Graph、Twitter Card、JSON-LD（BlogPosting）、sitemap/RSS 自动发现、双主题色；canonical 采用相对路径，换域名部署无需改动
+- **二级页面修复**：归档页列表样式、页面标题间距、各页 `<title>` 缺失
+- 图片查看器不再强制放大小图，避免模糊
+- **评论者头像**：邮箱填 `QQ号@qq.com` 时自动显示该 QQ 头像，其他邮箱回落到通用头像（需配合站点侧头像代理，见 docs）
 
 ### 0.1.3
 
@@ -130,7 +142,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.3.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.4.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 
@@ -228,6 +240,6 @@ theme-encounter/
 ## 致谢与许可
 
 - 原始设计与实现：[the3ash/astro-chiri](https://github.com/the3ash/astro-chiri)（MIT）
-- 本项目为 Halo 2.27 移植版本，遵循 **MIT** 许可，保留原作者署名
+- 本项目由 **KeKe0904** 依据原设计语言重新实现为 Halo 2.27 主题，遵循 **MIT** 许可，保留原作者署名
 
 如果这个主题对你有帮助，欢迎给原项目点个 star。

@@ -1,4 +1,4 @@
-<header th:fragment="siteHeader">
+<header th:fragment="siteHeader" th:with="primaryMenu=${menuFinder.getPrimary()}">
   <nav>
     <a th:href="@{/}" th:text="${site.title}">ENCOUNTER</a>
 
@@ -7,6 +7,14 @@
         <span class="weather-icon" data-weather-icon aria-hidden="true"></span>
         <span class="weather-temp" data-weather-temp></span>
       </span>
+
+      <button type="button" class="header-action" data-menu-open
+              th:if="${primaryMenu != null and not #lists.isEmpty(primaryMenu.menuItems)}"
+              aria-label="站内导航" title="站内导航">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M1.5 3.2h9M1.5 6h9M1.5 8.8h9" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"></path>
+        </svg>
+      </button>
 
       <button type="button" class="header-action" data-search-open
               th:if="${theme.config.halo?.search_enable != false}"
