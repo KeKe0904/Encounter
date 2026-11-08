@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout :: html(head = ~{modules/head :: head(pageTitle='友链', pageDescription=null, pageImage=null, pagePath='/links', pageType='website', publishedTime=null, modifiedTime=null, authorName=null)}, content = ~{::content})}">
+  <th:block th:fragment="content">
+        <h2 class="page-title">友链</h2>
+
+        <div class="link-groups" th:if="${groups != null and not #lists.isEmpty(groups)}">
+          <section class="link-group" th:each="group : ${groups}">
+            <h3 class="link-group-title" th:if="${not #strings.isEmpty(group.spec.displayName)}"
+                th:text="${group.spec.displayName}">分组</h3>
+
+            <div class="link-grid">
+              <a class="link-item" th:each="link : ${group.links}"
+                 th:href="${link.spec.url}" target="_blank" rel="noopener"
+                 th:title="${link.spec.displayName}">
+                <img class="link-logo" th:if="${link.spec.logo != null and link.spec.logo != ''}"
+                     th:src="${link.spec.logo}" alt="" loading="lazy" />
+                <span class="link-initial" th:if="${link.spec.logo == null or link.spec.logo == ''}"
+                      th:text="${#strings.substring(link.spec.displayName, 0, 1)}">友</span>
+
+                <span class="link-body">
+                  <span class="link-name" th:text="${link.spec.displayName}">名称</span>
+                  <span class="link-desc" th:if="${link.spec.description != null and link.spec.description != ''}"
+                        th:text="${link.spec.description}">描述</span>
+                </span>
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <p class="link-empty" th:if="${groups == null or #lists.isEmpty(groups)}">还没有添加友链</p>
+
+        <div class="placeholder"></div>
+  </th:block>
+</html>

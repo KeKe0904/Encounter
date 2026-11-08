@@ -1030,3 +1030,96 @@ body.menu-open {
 .comment-gate-link:hover {
   text-decoration-color: var(--text-secondary);
 }
+
+/* ============ 友链（plugin-links） ============ */
+
+.link-groups {
+  margin-top: 0.5rem;
+}
+
+.link-group + .link-group {
+  margin-top: 2rem;
+}
+
+.link-group-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+}
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.2rem 0.4rem;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.15s ease-out;
+}
+
+.link-item:hover {
+  background-color: var(--border);
+}
+
+.link-logo,
+.link-initial {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  background-color: var(--border);
+}
+
+.link-initial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.link-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  line-height: 1.4;
+}
+
+.link-name {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease-out;
+}
+
+.link-desc {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link-empty {
+  font-size: var(--font-size-s);
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 480px) {
+  .link-grid {
+    grid-template-columns: 1fr;
+  }
+}
