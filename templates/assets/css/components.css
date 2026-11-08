@@ -1223,7 +1223,7 @@ header {
 
 /* ===== components/ui/ThemeManager.astro ===== */
 :root {
-    --bg: #ffffff;
+    --bg: #FAF7F2;
   }
 
   html.dark {

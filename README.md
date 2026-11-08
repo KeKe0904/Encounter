@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.1.7.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.7/theme-encounter-0.1.7.zip)
+> **直接下载安装包**：[theme-encounter-0.1.9.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.9/theme-encounter-0.1.9.zip)
 
-当前版本 **0.1.7** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.1.9** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,16 @@
 ---
 
 ## 更新日志
+
+### 0.1.9
+
+- **修复友链无图标时头像空白**：0.1.8 的样式清理把兜底规则一起删掉了，现补回，无 Logo 或 Logo 加载失败时显示「友」字圆形头像
+- **白天背景改暖**：纯白 `#ffffff` → 米白 `#FAF7F2`，边框同步调成偏暖的 `rgba(80,60,40,.12)`，长时间阅读更柔和
+
+### 0.1.8
+
+- 友链模板改为「零异常写法」：不再使用 `substring`、不再在属性里做三元取值，首字母兜底改由 CSS 生成（`::after` + `:has()`）
+- 任何站名为空、Logo 为空或图片 404 的条目都不会再让页面报错
 
 ### 0.1.7
 
@@ -158,7 +168,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.7.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.9.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 
