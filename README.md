@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.1.1.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.1/theme-encounter-0.1.1.zip)
+> **直接下载安装包**：[theme-encounter-0.1.2.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.1.2/theme-encounter-0.1.2.zip)
 
-当前版本 **0.1.1** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.1.2** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,14 @@
 ---
 
 ## 更新日志
+
+### 0.1.2
+
+- 新增**备案信息展示**：ICP 备案号与公安联网备案号，填写后显示在页脚，留空则完全不占位
+  - ICP 链接默认指向工信部查询页，公安备案按编号自动拼官方查询链接
+  - 公安徽标已本地打包（`templates/assets/img/gongan.png`），避免官方图片防盗链导致不显示
+- **页脚重排**：版权补年份、`Powered by Halo · Encounter`、备案信息居中独立成行并加分隔线、移动端三行居中
+- 备案行单独降一档权重（12px / 更低透明度），不与版权行抢视线
 
 ### 0.1.1
 
@@ -114,7 +122,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.1.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.1.2.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 

@@ -98,3 +98,32 @@ spec:
           name: search_enable
           label: 启用搜索入口
           value: true
+    - group: beian
+      label: 备案信息
+      formSchema:
+        - $formkit: text
+          name: icp_text
+          label: ICP 备案号
+          value: ""
+          placeholder: 如 京ICP备12345678号-1
+          help: 填写后显示在页脚；留空则不显示
+        - $formkit: text
+          name: icp_url
+          label: ICP 备案查询地址
+          value: "https://beian.miit.gov.cn/"
+        - $formkit: text
+          name: police_text
+          label: 公安联网备案号
+          value: ""
+          placeholder: 如 京公网安备 11010502030123号
+        - $formkit: text
+          name: police_code
+          label: 公安备案编号（纯数字）
+          value: ""
+          placeholder: 如 11010502030123
+          help: 用于拼接官方查询链接 webSearch?code=编号
+        - $formkit: text
+          name: police_icon
+          label: 公安备案图标地址
+          value: ""
+          help: 留空则使用主题内置的官方徽标（已本地打包，避免防盗链失效）

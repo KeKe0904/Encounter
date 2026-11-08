@@ -1,11 +1,27 @@
 <footer th:fragment="siteFooter" th:if="${theme.config.basic?.footer != false}">
   <div class="footer-content">
     <div class="copyright">
-      <span class="date">&copy;</span>
-      <span th:text="${site.title}"></span>
+      <span class="copyright-mark">&copy;</span><span class="copyright-year"></span>
+      <span class="copyright-name" th:text="${site.title}"></span>
     </div>
-    <div class="powered-by">
-      Powered by <a href="https://halo.run" target="_blank" rel="noopener">Halo</a> + <a href="https://github.com/KeKe0904/Encounter" target="_blank" rel="noopener">Encounter</a>
-    </div>
+    <div class="powered-by">Powered by <a href="https://halo.run" target="_blank" rel="noopener">Halo</a><span class="sep">·</span><a href="https://github.com/KeKe0904/Encounter" target="_blank" rel="noopener">Encounter</a></div>
+  </div>
+
+  <!-- 备案信息：留空则整块不渲染，不占任何高度 -->
+  <div class="footer-beian"
+       th:if="${(theme.config.beian?.icp_text ?: '') != '' or (theme.config.beian?.police_text ?: '') != ''}">
+    <a class="beian-item" th:if="${(theme.config.beian?.icp_text ?: '') != ''}"
+       th:href="${theme.config.beian?.icp_url ?: 'https://beian.miit.gov.cn/'}"
+       target="_blank" rel="noopener nofollow"
+       th:text="${theme.config.beian.icp_text}">ICP 备案号</a>
+
+    <a class="beian-item" th:if="${(theme.config.beian?.police_text ?: '') != ''}"
+       th:with="code=${theme.config.beian?.police_code ?: ''}"
+       th:href="${code != '' ? 'https://beian.mps.gov.cn/#/query/webSearch?code=' + code : 'https://beian.mps.gov.cn/'}"
+       target="_blank" rel="noopener nofollow">
+      <img th:src="${(theme.config.beian?.police_icon ?: '') != '' ? theme.config.beian.police_icon : #theme.assets('/img/gongan.png')}"
+           alt="" aria-hidden="true" onerror="this.style.display='none'" />
+      <span th:text="${theme.config.beian.police_text}">公安备案号</span>
+    </a>
   </div>
 </footer>

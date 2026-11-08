@@ -420,6 +420,12 @@
     })
   }
 
+  /* 页脚年份 */
+  function initFooterYear() {
+    var el = document.querySelector('.copyright-year')
+    if (el) el.textContent = new Date().getFullYear()
+  }
+
   function boot() {
     var f = readFlags()
     markTransitionSupport()
@@ -432,6 +438,7 @@
     }
 
     initIntro()
+    initFooterYear()
     initTheme()
     initGradientMask()
     if (f.toc) initToc()
