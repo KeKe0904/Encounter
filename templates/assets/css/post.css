@@ -580,3 +580,11 @@
 .prose iframe[src*='spotify.com'] {
   aspect-ratio: auto;
 }
+
+
+/* 标题断行更均衡（支持的浏览器生效） */
+.prose .title h1,
+.prose h2,
+.prose h3 {
+  text-wrap: pretty;
+}

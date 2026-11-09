@@ -6,9 +6,29 @@
   --content-width: 25rem;
 
   /* Typography */
-  --sans: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --sans:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'PingFang SC',
+    'HarmonyOS Sans SC',
+    'MiSans',
+    'Hiragino Sans GB',
+    'Noto Sans SC',
+    'Source Han Sans SC',
+    'Microsoft YaHei',
+    sans-serif;
   --serif: Besley, Baskerville, Georgia, 'Times New Roman', Times, serif;
-  --mono: 'SF Mono', SFMono-Regular, ui-monospace, monospace;
+  --mono:
+    'JetBrains Mono',
+    'SF Mono',
+    SFMono-Regular,
+    ui-monospace,
+    Menlo,
+    Consolas,
+    'Liberation Mono',
+    'PingFang SC',
+    monospace;
 
   --font-size-s: 0.8125rem;
   --font-size-m: 0.9375rem;
@@ -115,13 +135,17 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  letter-spacing: var(--spacing-m);
+  letter-spacing: normal;
   margin: 0 auto;
   width: 100%;
   overscroll-behavior-y: contain;
   text-autospace: normal;
   text-spacing-trim: space-first;
+  line-break: strict;
+  word-break: normal;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;
   word-wrap: break-word;
   overflow-wrap: break-word;
