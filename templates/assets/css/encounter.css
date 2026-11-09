@@ -1150,3 +1150,95 @@ body.menu-open {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================
+   响应式：首页一屏布局（Viewport Fit）
+   - 仅在首页且开启「首页一屏显示」时生效（body[data-fit-viewport='true']）
+   - 头部 / 简介 / 分页 / 页脚固定，文章列表占满剩余高度
+   - 条目超出时在列表内部滚动，页面本身不滚，避免整页跳动
+   ========================================================== */
+body[data-fit-viewport='true'].enc-home {
+  height: var(--viewport-height);
+  overflow: hidden;
+}
+
+body[data-fit-viewport='true'].enc-home > .layout-wrapper,
+body[data-fit-viewport='true'].enc-home .page-content {
+  min-height: 0;
+}
+
+body[data-fit-viewport='true'].enc-home .page-content > main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+body[data-fit-viewport='true'].enc-home main > .about {
+  flex: 0 0 auto;
+}
+
+body[data-fit-viewport='true'].enc-home main > .post-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+body[data-fit-viewport='true'].enc-home main > .post-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+body[data-fit-viewport='true'].enc-home main > .post-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+/* 列表末尾的占位块在锁定布局时不占高度 */
+body[data-fit-viewport='true'].enc-home main > .placeholder {
+  display: none;
+}
+
+/* 分页常驻列表下方，一眼可见「下一页」 */
+body[data-fit-viewport='true'].enc-home main > .encounter-pager {
+  flex: 0 0 auto;
+  margin-top: 1.5rem;
+}
+
+body[data-fit-viewport='true'].enc-home footer {
+  margin-top: 1.75rem;
+}
+
+/* 解除锁定：展开页脚徽章、窗口尺寸变化等场景 */
+body.enc-scroll-unlocked {
+  height: auto;
+  overflow: auto;
+}
+
+body.enc-scroll-unlocked .page-content > main {
+  display: block;
+}
+
+body.enc-scroll-unlocked main > .post-list {
+  overflow: visible;
+}
+
+/* 极短视口（横屏手机 / 小笔记本）进一步压缩 */
+@media (max-height: 700px) {
+  body[data-fit-viewport='true'].enc-home main > .encounter-pager {
+    margin-top: 0.85rem;
+  }
+
+  body[data-fit-viewport='true'].enc-home footer {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 340px) {
+  body[data-fit-viewport='true'].enc-home main > .encounter-pager {
+    font-size: 0.8rem;
+  }
+}

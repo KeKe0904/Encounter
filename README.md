@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.2.2.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.2.2/theme-encounter-0.2.2.zip)
+> **直接下载安装包**：[theme-encounter-0.2.3.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.2.3/theme-encounter-0.2.3.zip)
 
-当前版本 **0.2.2** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.2.3** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,22 @@
 ---
 
 ## 更新日志
+
+### 0.2.3
+
+- **响应式全面重做（按屏幕宽 + 高双向自适应）**
+  - 上下留白改为随视口高度伸缩：`≥1061px` 6.5rem、`821–1060px` 6rem、`≤820px` 4.5rem、`≤720px` 3.5rem、`≤620px` 2.5rem
+  - 左右边距随宽度伸缩：`≥1400px` 1.75rem、默认 1.5rem、`≤520px` 1.25rem、`≤380px` 1rem
+  - 全部改用 CSS 变量（`--gutter` / `--top-gap` / `--bottom-gap`），一处调整全局生效
+  - 适配 `100dvh`（移动端地址栏收起/展开不再跳动），并接入 `env(safe-area-inset-*)` 刘海屏安全区
+  - 新增 `img / video / iframe { max-width: 100% }`，防止媒体撑破容器
+- **首页一屏显示（新设置项 `首页一屏显示`，默认开启）**
+  - 头部、简介、分页、页脚固定，文章列表占满中间剩余高度
+  - 条目超出时在**列表内部滚动**，页面本身不产生滚动，避免整页跳动
+  - 分页常驻列表下方，「下一页」始终可见
+  - 页脚徽章展开等场景自动解锁整页滚动（`body.enc-scroll-unlocked`）
+  - 关闭该设置即恢复传统整页滚动
+- **极短视口与极窄屏细节**：`max-height: 700px` 压缩分页与页脚间距；`max-width: 340px` 缩小分页字号
 
 ### 0.2.2
 
@@ -196,7 +212,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.2.2.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.2.3.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 

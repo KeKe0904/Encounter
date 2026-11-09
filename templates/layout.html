@@ -11,7 +11,7 @@
     </th:block>
   </head>
   <body
-    th:attr="data-centered=${theme.config.basic?.centered_layout ?: true},data-fade=${theme.config.basic?.fade_animation ?: true},data-toc=${theme.config.post?.toc ?: true},data-copy=${theme.config.post?.copy_code ?: true},data-viewer=${theme.config.post?.image_viewer ?: true},data-katex=${theme.config.post?.katex ?: true}"
+    th:attr="data-centered=${theme.config.basic?.centered_layout ?: true},data-fit-viewport=${theme.config.basic?.home_fit_viewport ?: true},data-fade=${theme.config.basic?.fade_animation ?: true},data-toc=${theme.config.post?.toc ?: true},data-copy=${theme.config.post?.copy_code ?: true},data-viewer=${theme.config.post?.image_viewer ?: true},data-katex=${theme.config.post?.katex ?: true}"
     th:style="|max-width: ${theme.config.basic?.content_width ?: '35rem'};|">
     <div class="layout-wrapper">
       <div class="page-content">

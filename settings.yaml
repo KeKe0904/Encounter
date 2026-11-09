@@ -17,6 +17,11 @@ spec:
           label: 居中布局
           value: true
         - $formkit: checkbox
+          name: home_fit_viewport
+          label: 首页一屏显示
+          value: true
+          help: 开启后首页头部、简介、分页与页脚固定，文章列表占满中间；条目过多时列表内部滚动，整页不产生滚动
+        - $formkit: checkbox
           name: theme_toggle
           label: 显示深浅色切换按钮
           value: true

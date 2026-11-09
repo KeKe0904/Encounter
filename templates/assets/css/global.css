@@ -5,6 +5,12 @@
   /* Min Content Width */
   --content-width: 25rem;
 
+  /* 响应式间距与视口高度（随屏幕宽高自适应） */
+  --gutter: 1.5rem;
+  --top-gap: 6rem;
+  --bottom-gap: 1.5rem;
+  --viewport-height: 100vh;
+
   /* Typography */
   --sans:
     'Inter',
@@ -115,6 +121,59 @@ html.dark {
   --astro-code-token-link: rgba(255, 255, 255, 0.55);
 }
 
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+  }
+}
+
+/* 高度自适应：矮屏压缩上下留白，高屏放宽 */
+@media (max-height: 820px) {
+  :root {
+    --top-gap: 4.5rem;
+  }
+}
+
+@media (max-height: 720px) {
+  :root {
+    --top-gap: 3.5rem;
+    --bottom-gap: 1.15rem;
+  }
+}
+
+@media (max-height: 620px) {
+  :root {
+    --top-gap: 2.5rem;
+    --bottom-gap: 0.9rem;
+  }
+}
+
+@media (min-height: 1061px) {
+  :root {
+    --top-gap: 6.5rem;
+    --bottom-gap: 2rem;
+  }
+}
+
+/* 宽度自适应：窄屏收窄左右边距，宽屏略微放宽 */
+@media (max-width: 520px) {
+  :root {
+    --gutter: 1.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --gutter: 1rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  :root {
+    --gutter: 1.75rem;
+  }
+}
+
 html {
   background-color: var(--bg);
   scroll-behavior: smooth;
@@ -131,7 +190,7 @@ body {
   font-size: var(--font-size-m);
   line-height: 1.75;
   color: var(--text-primary);
-  min-height: 100vh;
+  min-height: var(--viewport-height);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -152,20 +211,33 @@ body {
 }
 
 body[data-centered='true'] {
-  padding: 6rem 1.5rem 1.5rem;
+  padding: var(--top-gap)
+    max(var(--gutter), env(safe-area-inset-right))
+    calc(var(--bottom-gap) + env(safe-area-inset-bottom))
+    max(var(--gutter), env(safe-area-inset-left));
 }
 
 body[data-centered='false'] {
-  padding: 6rem 0 1.5rem;
-  margin: 0 1.5rem 0 8rem;
+  padding: var(--top-gap) 0 calc(var(--bottom-gap) + env(safe-area-inset-bottom));
+  margin: 0 var(--gutter) 0 8rem;
 }
 
 @media (max-width: 768px) {
   body[data-centered='true'],
   body[data-centered='false'] {
-    padding: 4rem 1.35rem 1.35rem;
+    padding: var(--top-gap)
+      max(var(--gutter), env(safe-area-inset-right))
+      calc(var(--bottom-gap) + env(safe-area-inset-bottom))
+      max(var(--gutter), env(safe-area-inset-left));
     margin: 0 auto;
   }
+}
+
+/* 媒体元素不撑破容器 */
+img,
+video,
+iframe {
+  max-width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

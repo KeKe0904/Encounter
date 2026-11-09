@@ -451,6 +451,58 @@
   }
 
   /* 页脚年份 */
+  /* ---------------- 首页一屏布局（ViewportFit） ----------------
+   * 仅在「首页一屏显示」开启且当前是首页时启用：
+   *   - 页面锁定为一屏高度，头部/简介/分页/页脚固定
+   *   - 文章列表占满剩余高度，条目多时在列表内部滚动
+   *   - 页脚徽章展开等场景自动解锁整页滚动
+   */
+  function initViewportFit() {
+    var body = document.body
+    if (!body || body.getAttribute('data-fit-viewport') !== 'true') return
+
+    var path = location.pathname.replace(/\/index\.html$/, '/')
+    if (path !== '/') return
+
+    body.classList.add('enc-home')
+
+    function unlock() {
+      body.classList.add('enc-scroll-unlocked')
+    }
+
+    /* 页脚徽章展开后页面需要变高，恢复整页滚动 */
+    var wall = document.getElementById('enc-beian-wall')
+    if (wall) {
+      var mo = new MutationObserver(function () {
+        if (wall.classList.contains('enc-gate-shown')) {
+          unlock()
+          mo.disconnect()
+        }
+      })
+      mo.observe(wall, { attributes: true, attributeFilter: ['class'] })
+    }
+
+    /* 视口变化后重新兜底：内容确实放不下就解锁，避免被裁切 */
+    var timer = 0
+    function recheck() {
+      var list = document.querySelector('.post-list')
+      if (!list) return
+      var overflowing = list.scrollHeight > list.clientHeight + 1
+      body.classList.toggle('enc-list-overflow', overflowing)
+    }
+
+    window.addEventListener(
+      'resize',
+      function () {
+        window.clearTimeout(timer)
+        timer = window.setTimeout(recheck, 150)
+      },
+      { passive: true }
+    )
+
+    window.requestAnimationFrame(recheck)
+  }
+
   function initFooterYear() {
     var el = document.querySelector('.copyright-year')
     if (el) el.textContent = new Date().getFullYear()
@@ -910,6 +962,7 @@
     initCommentForm()
     initInteractions()
     initMoments()
+    initViewportFit()
     initMenu()
     initWeather()
     initSearch()
