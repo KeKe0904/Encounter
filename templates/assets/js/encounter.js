@@ -351,7 +351,7 @@
     var minutes = Math.max(1, Math.round(cjk / 500 + words / 200))
     var span = document.createElement('span')
     span.className = 'reading-time'
-    span.innerHTML = '<span class="separator">·</span> ' + minutes + ' 分钟'
+    span.innerHTML = '<span class="separator">·</span> 约 ' + minutes + ' 分钟读完'
     dateBox.appendChild(span)
   }
 
@@ -481,26 +481,6 @@
       })
       mo.observe(wall, { attributes: true, attributeFilter: ['class'] })
     }
-
-    /* 视口变化后重新兜底：内容确实放不下就解锁，避免被裁切 */
-    var timer = 0
-    function recheck() {
-      var list = document.querySelector('.post-list')
-      if (!list) return
-      var overflowing = list.scrollHeight > list.clientHeight + 1
-      body.classList.toggle('enc-list-overflow', overflowing)
-    }
-
-    window.addEventListener(
-      'resize',
-      function () {
-        window.clearTimeout(timer)
-        timer = window.setTimeout(recheck, 150)
-      },
-      { passive: true }
-    )
-
-    window.requestAnimationFrame(recheck)
   }
 
   function initFooterYear() {

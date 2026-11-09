@@ -207,12 +207,6 @@
   object-fit: contain;
 }
 
-@media (max-width: 768px) {
-  .image-viewer img {
-    max-width: 92vw;
-  }
-}
-
 body.image-viewer-open {
   overflow: hidden;
 }
@@ -330,13 +324,6 @@ body.image-viewer-open {
 }
 
 /* ============ 8. 主题切换按钮（原版 ThemeToggle） ============ */
-
-.site-header nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 
 
 /* 阅读时长 */
@@ -492,7 +479,6 @@ html.dark {
 
 /* ============ 页脚 ============ */
 
-.site-footer,
 footer {
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-light);
@@ -584,6 +570,10 @@ footer a:hover {
   footer {
     margin-top: 3rem;
   }
+
+  .link-grid {
+    grid-template-columns: 1fr;
+  }
   .footer-content {
     flex-direction: column;
     align-items: center;
@@ -622,6 +612,20 @@ footer a:hover {
 @media (hover: none) and (pointer: coarse) {
   .theme-toggle {
     opacity: 0.55;
+  }
+}
+
+/* 触屏设备没有 hover：复制按钮常驻显示，并放大点击区域 */
+@media (hover: none) {
+  .copy-button {
+    opacity: 0.6;
+    pointer-events: auto;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .copy-button:active {
+    opacity: 1;
   }
 }
 
@@ -681,6 +685,10 @@ footer a:hover {
   textarea,
   select {
     font-size: 16px;
+  }
+
+  .image-viewer img {
+    max-width: 92vw;
   }
 }
 
@@ -1145,12 +1153,6 @@ body.menu-open {
   color: var(--text-tertiary);
 }
 
-@media (max-width: 480px) {
-  .link-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ==========================================================
    响应式：首页一屏布局（Viewport Fit）
    - 仅在首页且开启「首页一屏显示」时生效（body[data-fit-viewport='true']）
@@ -1241,4 +1243,18 @@ body.enc-scroll-unlocked main > .post-list {
   body[data-fit-viewport='true'].enc-home main > .encounter-pager {
     font-size: 0.8rem;
   }
+}
+
+/* 空状态提示（列表无内容时） */
+.empty-hint {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-s);
+  margin: 0.75rem 0 0;
+}
+
+/* 404 页补充说明 */
+.error-desc {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-s);
+  margin: 0.35rem 0 1.25rem;
 }

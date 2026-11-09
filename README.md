@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.2.3.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.2.3/theme-encounter-0.2.3.zip)
+> **直接下载安装包**：[theme-encounter-1.0.0.zip](https://github.com/KeKe0904/Encounter/releases/download/v1.0.0/theme-encounter-1.0.0.zip)
 
-当前版本 **0.2.3** · 兼容 **Halo >= 2.27.0**
+当前版本 **1.0.0** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,35 @@
 ---
 
 ## 更新日志
+
+### 1.0.0
+
+首个正式版。在 0.2.3 基础上做了一轮完整的代码体检、缺陷修复与文案打磨。
+
+#### 修复
+
+- **触屏设备无法复制代码**：复制按钮依赖 `:hover` 才显示，而手机、平板没有 hover，按钮永远不可见也不可点。现在触屏下常驻显示（透明度 0.6），点击区域放大到 36×36
+
+#### 代码清理
+
+- 移除 `global.css` 中重复的 `@import`（`fonts.css`、`post.css` 已由 `head.html` 直接引入），少两次请求、少一轮重复解析
+- 删除死样式：`.site-header` / `.site-footer` 选择器、只服务于不存在属性的 `body[data-width]` 规则、未使用的 `.sr-only` 工具类
+- 合并重复的 `@media` 块（`max-width: 768px`、`max-width: 480px` 各两处）
+- 删除 JS 中无 CSS 消费的 `enc-list-overflow` 状态切换与配套 resize 监听
+
+#### 文案优化（前台）
+
+- 空状态：首页「这里还很安静，还没有文章。」、归档「还没有可以归档的文章。」、瞬间、友链同步改写
+- 404 页：「这个页面走丢了」+ 补充说明「链接可能已经失效，或者它从来没有存在过。」，按钮改为「返回首页 →」
+- 分页补 `aria-label` / `aria-disabled`，屏幕阅读器可正确识别
+- 菜单键盘提示改为「↑ ↓ 选择 · ↵ 打开 · ESC 关闭」
+- 点赞按钮文案「赞」→「点赞」，阅读时长改为「约 N 分钟读完」
+
+#### 文案优化（后台设置）
+
+- 分组重命名更直观：外观与首页 / 日期与列表 / 文章阅读 / Halo 集成 / 备案信息 / 代码注入
+- 27 个设置项全部补齐 `help` 说明，写清「开启后会怎样、留空会怎样、依赖什么」
+- 权限类选项的中文标签明确为「所有人（含游客）/ 仅登录用户」
 
 ### 0.2.3
 
@@ -212,7 +241,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.2.3.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-1.0.0.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 

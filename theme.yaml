@@ -8,13 +8,13 @@ spec:
   author:
     name: KeKe0904
     website: https://github.com/KeKe0904
-  description: Encounter —— 极简博客主题，设计灵感来自 astro-chiri，为 Halo 2.27 全新实现。
+  description: Encounter —— 极简博客主题，设计灵感来自 astro-chiri，为 Halo 2.27 全新实现；自带宽度与高度双向自适应、首页一屏显示与完整 SEO。
   homepage: https://github.com/KeKe0904/Encounter
   repo: https://github.com/KeKe0904/Encounter
   issues: https://github.com/KeKe0904/Encounter/issues
   settingName: "theme-encounter-setting"
   configMapName: "theme-encounter-configmap"
-  version: 0.2.3
+  version: 1.0.0
   requires: ">=2.27.0"
   license:
     - name: "MIT"

@@ -1,10 +1,4 @@
-@import './fonts.css';
-@import './post.css';
-
 :root {
-  /* Min Content Width */
-  --content-width: 25rem;
-
   /* 响应式间距与视口高度（随屏幕宽高自适应） */
   --gutter: 1.5rem;
   --top-gap: 6rem;
@@ -260,10 +254,6 @@ iframe {
 :focus-visible {
   outline: 1.5px dashed var(--text-tertiary);
   border-radius: 0.25rem;
-}
-
-body[data-width] {
-  max-width: var(--content-width);
 }
 
 main {

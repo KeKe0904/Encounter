@@ -9,7 +9,7 @@
             <th:block th:replace="~{modules/post-list :: postList(${month.posts})}"></th:block>
           </th:block>
         </section>
-        <p th:if="${archives.items.isEmpty()}">还没有文章</p>
+        <p class="empty-hint" th:if="${archives.items.isEmpty()}">还没有可以归档的文章。</p>
         <th:block th:replace="~{modules/pager :: pager(${archives.hasPrevious()}, ${archives.prevUrl}, ${archives.hasNext()}, ${archives.nextUrl})}"></th:block>
   </th:block>
 </html>

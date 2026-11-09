@@ -5,57 +5,62 @@ metadata:
 spec:
   forms:
     - group: basic
-      label: 基本设置
+      label: 外观与首页
       formSchema:
         - $formkit: text
           name: content_width
           label: 内容区宽度
           value: "560px"
-          help: 对应原版的 --content-width / body max-width
+          help: 正文最大宽度，默认 560px。手机等窄屏会自动占满，不受此限制。
         - $formkit: checkbox
           name: centered_layout
-          label: 居中布局
+          label: 内容居中
           value: true
+          help: 关闭后内容靠左对齐，适合宽屏阅读；窄屏下仍会自动居中。
         - $formkit: checkbox
           name: home_fit_viewport
           label: 首页一屏显示
           value: true
-          help: 开启后首页头部、简介、分页与页脚固定，文章列表占满中间；条目过多时列表内部滚动，整页不产生滚动
+          help: 首页的头部、简介、分页与页脚固定不动，文章列表占满中间剩余空间；文章较多时在列表内部滚动，整页不滚动。关闭后恢复传统整页滚动。
         - $formkit: checkbox
           name: theme_toggle
           label: 显示深浅色切换按钮
           value: true
-          help: 显示在页头右上角，点击切换白天 / 夜间
+          help: 页头右上角显示太阳 / 月亮图标，访客的选择会被浏览器记住。
         - $formkit: textarea
           name: intro
           label: 首页简介
           value: "这里是 Encounter，一个安静的角落。\n记录日常、读书，和一些没头没尾的想法。"
           rows: 4
-          help: 显示在首页文章列表上方，支持 HTML；留空则回退到站点描述
+          help: 显示在首页文章列表上方，支持 HTML。留空时自动使用站点描述。
         - $formkit: checkbox
           name: post_list_dotted_divider
           label: 列表使用点状分隔线
           value: false
+          help: 开启后标题与日期之间改用点线连接，视觉上更轻盈。
         - $formkit: checkbox
           name: weather_enable
           label: 显示天气
           value: true
-          help: 按访客 IP 定位显示所在城市当前温度（ipinfo.io + Open-Meteo，无需密钥）
+          help: 按访客 IP 定位显示当前气温（ipinfo.io 定位 + Open-Meteo 取天气，均无需密钥）。接口失败时自动隐藏，不占位。
         - $formkit: checkbox
           name: footer
           label: 显示页脚
           value: true
+          help: 关闭后页脚版权、备案信息与「代码注入」中的页脚代码都不再显示。
         - $formkit: checkbox
           name: fade_animation
           label: 启用淡入动画
           value: true
+          help: 页面内容轻微淡入。低性能设备或觉得晃眼时可以关掉。
     - group: date
-      label: 日期设置
+      label: 日期与列表
       formSchema:
         - $formkit: select
           name: date_format
           label: 日期格式
           value: "YYYY-MM-DD"
+          help: 文章列表中日期的排列顺序。
           options:
             - label: YYYY-MM-DD
               value: "YYYY-MM-DD"
@@ -71,64 +76,73 @@ spec:
           name: date_separator
           label: 日期分隔符
           value: "."
+          help: 年、月、日之间使用的符号，默认「.」。
         - $formkit: checkbox
           name: date_on_right
-          label: 日期在右侧
+          label: 日期显示在右侧
           value: true
+          help: 关闭后日期会排在标题左侧。
     - group: post
-      label: 文章设置
+      label: 文章阅读
       formSchema:
         - $formkit: checkbox
           name: toc
-          label: 显示目录
+          label: 显示文章目录
           value: true
+          help: 宽屏时在左侧固定显示目录并高亮当前章节，窄屏自动隐藏。
         - $formkit: checkbox
           name: reading_time
           label: 显示阅读时长
           value: false
+          help: 按正文中英文词数估算，在文章日期旁显示「约 N 分钟读完」。
         - $formkit: checkbox
           name: image_viewer
           label: 图片查看器
           value: true
+          help: 点击正文图片可放大查看，按 ESC 或点击遮罩关闭。
         - $formkit: checkbox
           name: copy_code
           label: 代码块复制按钮
           value: true
+          help: 在代码块右上角显示复制按钮，点击即复制全部代码。
         - $formkit: checkbox
           name: katex
           label: 启用 KaTeX 公式
           value: true
+          help: 支持数学公式渲染。几乎不用公式的站点可以关闭，减少两个外部脚本的加载。
     - group: halo
-      label: Halo 能力（原版没有，按原版版式内嵌）
+      label: Halo 集成
       formSchema:
         - $formkit: checkbox
           name: comment_enable
           label: 启用评论
           value: true
+          help: 需要安装并启用评论插件，同时文章本身的「允许评论」为开启，三个条件同时满足才会显示评论区。
         - $formkit: select
           name: like_permission
           label: 点赞权限
-          value: all
+          value: "all"
+          help: 控制谁能给文章与瞬间点赞。
           options:
             - label: 所有人（含游客）
-              value: all
+              value: "all"
             - label: 仅登录用户
-              value: login
-          help: 控制文章与瞬间的点赞，可与评论权限分别设置
+              value: "login"
         - $formkit: select
           name: comment_permission
           label: 评论权限
-          value: all
+          value: "all"
+          help: 控制谁能看到评论框。选「仅登录用户」时，游客会看到登录引导。
           options:
             - label: 所有人（含游客）
-              value: all
+              value: "all"
             - label: 仅登录用户
-              value: login
-          help: 控制文章与瞬间的评论，可与点赞权限分别设置
+              value: "login"
         - $formkit: checkbox
           name: search_enable
-          label: 启用搜索入口
+          label: 启用搜索
           value: true
+          help: 页头显示搜索入口，支持键盘 Ctrl / ⌘ + K 唤起。
     - group: beian
       label: 备案信息
       formSchema:
@@ -136,41 +150,39 @@ spec:
           name: icp_text
           label: ICP 备案号
           value: ""
-          placeholder: 如 京ICP备12345678号-1
-          help: 填写后显示在页脚；留空则不显示
+          help: 例如「京ICP备00000000号」。留空则不显示，也不占高度。
         - $formkit: text
           name: icp_url
           label: ICP 备案查询地址
           value: "https://beian.miit.gov.cn/"
+          help: 点击 ICP 备案号后跳转的地址，默认是工信部备案查询。
         - $formkit: text
           name: police_text
           label: 公安联网备案号
           value: ""
-          placeholder: 如 京公网安备 11010502030123号
+          help: 例如「京公网安备 11000000000000号」。留空则不显示。
         - $formkit: text
           name: police_code
           label: 公安备案编号（纯数字）
           value: ""
-          placeholder: 如 11010502030123
-          help: 用于拼接官方查询链接 webSearch?code=编号
+          help: 只填数字部分，用于拼出公安备案查询链接。
         - $formkit: text
           name: police_icon
           label: 公安备案图标地址
           value: ""
-          help: 留空则使用主题内置的官方徽标（已本地打包，避免防盗链失效）
-
+          help: 留空使用主题自带的警徽图标；填写后会替换为你的图片地址。
     - group: inject
       label: 代码注入
       formSchema:
         - $formkit: textarea
           name: head_code
-          rows: 5
-          label: 页头代码（&lt;head&gt; 内）
+          label: 页头代码
           value: ""
-          help: 会原样插入到 &lt;head&gt; 末尾，适合放统计脚本、meta 标签等
+          rows: 6
+          help: 原样插入到 </head> 之前，适合放统计脚本、站点验证 meta 等。可直接使用主题颜色变量，如 var(--text-tertiary)。
         - $formkit: textarea
           name: footer_code
-          rows: 8
-          label: 页脚代码（&lt;/body&gt; 前）
+          label: 页脚代码
           value: ""
-          help: 会原样插入到页面底部（页脚版权行之后），适合放备案徽章、统计脚本等；暗色/亮色可用主题变量 var(--text-tertiary) 自动适配
+          rows: 6
+          help: 原样插入到 </body> 之前（页脚版权行之后），适合放备案徽章、统计脚本等。同样支持主题颜色变量，深浅色会自动适配。

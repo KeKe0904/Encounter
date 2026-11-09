@@ -4,8 +4,9 @@
   <th:block th:fragment="content">
         <div class="error-container">
           <h1 class="error-code">404</h1>
-          <p class="error-text">这页好像不存在了</p>
-          <p class="error-back"><a th:href="@{/}">回到首页</a></p>
+          <p class="error-text">这个页面走丢了</p>
+          <p class="error-desc">链接可能已经失效，或者它从来没有存在过。</p>
+          <p class="error-back"><a th:href="@{/}">返回首页 &rarr;</a></p>
         </div>
   </th:block>
 </html>
