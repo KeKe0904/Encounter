@@ -23,5 +23,10 @@
     </div>
     <th:block th:replace="~{modules/menu-panel :: panel}"></th:block>
     <halo:footer />
+
+    <!-- 主题设置 → 代码注入 → 页脚代码 -->
+    <th:block th:if="${!#strings.isEmpty(theme.config.inject?.footer_code)}">
+      <th:block th:utext="${theme.config.inject.footer_code}"></th:block>
+    </th:block>
   </body>
 </html>

@@ -153,3 +153,19 @@ spec:
           label: 公安备案图标地址
           value: ""
           help: 留空则使用主题内置的官方徽标（已本地打包，避免防盗链失效）
+
+    - group: inject
+      label: 代码注入
+      formSchema:
+        - $formkit: textarea
+          name: head_code
+          rows: 5
+          label: 页头代码（&lt;head&gt; 内）
+          value: ""
+          help: 会原样插入到 &lt;head&gt; 末尾，适合放统计脚本、meta 标签等
+        - $formkit: textarea
+          name: footer_code
+          rows: 8
+          label: 页脚代码（&lt;/body&gt; 前）
+          value: ""
+          help: 会原样插入到页面底部（页脚版权行之后），适合放备案徽章、统计脚本等；暗色/亮色可用主题变量 var(--text-tertiary) 自动适配

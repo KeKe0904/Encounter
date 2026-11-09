@@ -4,9 +4,9 @@
 
 一个把 Astro 静态主题完整移植到 Halo 的尝试。原则很简单：**能还原的一律按原版还原；还原不了的用最接近的能力替代；Halo 多出来的能力按原版的设计语言补进去。**
 
-> **直接下载安装包**：[theme-encounter-0.2.1.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.2.1/theme-encounter-0.2.1.zip)
+> **直接下载安装包**：[theme-encounter-0.2.2.zip](https://github.com/KeKe0904/Encounter/releases/download/v0.2.2/theme-encounter-0.2.2.zip)
 
-当前版本 **0.2.1** · 兼容 **Halo >= 2.27.0**
+当前版本 **0.2.2** · 兼容 **Halo >= 2.27.0**
 
 ---
 
@@ -35,6 +35,13 @@
 ---
 
 ## 更新日志
+
+### 0.2.2
+
+- 新增主题设置组「**代码注入**」，无需改模板即可自定义页头/页脚：
+  - `页头代码`：原样插入到 `<head>` 末尾（统计脚本、meta 等）
+  - `页脚代码`：原样插入到 `</body>` 前（版权行之后），适合放备案徽章、统计脚本
+  - 两处均支持主题 CSS 变量（如 `var(--text-tertiary)`），亮色/暗色自动适配
 
 ### 0.2.1
 
@@ -189,7 +196,7 @@
 
 ### 方式一：下载 Release 包（推荐）
 
-1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.2.1.zip`
+1. 打开 [Releases](https://github.com/KeKe0904/Encounter/releases) 下载 `theme-encounter-0.2.2.zip`
 2. Halo 后台 → 主题 → 主题管理 → 上传安装 / 升级
 3. 启用即可
 

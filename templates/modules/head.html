@@ -49,7 +49,11 @@
         "@type": "WebPage",
         "@id": /*[[${absBase + pagePath}]]*/ ""
       }<th:block th:if="${pageImage != null and pageImage != ''}">,
-      "image": /*[[${#strings.startsWith(pageImage, 'http')} ? ${pageImage} : ${absBase + pageImage}]]*/ ""</th:block>
+      "image": /*[[${#strings.startsWith(pageImage, 'http')} ? ${pageImage} : ${absBase + pageImage}]]*/ ""  <!-- 主题设置 → 代码注入 → 页头代码 -->
+  <th:block th:if="${!#strings.isEmpty(theme.config.inject?.head_code)}">
+    <th:block th:utext="${theme.config.inject.head_code}"></th:block>
+  </th:block>
+</th:block>
     }
   </script>
 
@@ -78,4 +82,8 @@
   <link rel="stylesheet" th:if="${theme.config.post?.katex != false}" th:href="@{/assets/css/katex.min.css?v=1}" />
   <link rel="icon" type="image/png" th:href="@{/assets/favicon-light.png}" />
   <script th:src="@{/assets/js/encounter.js?v=70}" defer></script>
+  <!-- 主题设置 → 代码注入 → 页头代码 -->
+  <th:block th:if="${!#strings.isEmpty(theme.config.inject?.head_code)}">
+    <th:block th:utext="${theme.config.inject.head_code}"></th:block>
+  </th:block>
 </th:block>
